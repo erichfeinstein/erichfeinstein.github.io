@@ -1,0 +1,131 @@
+@import url('https://fonts.googleapis.com/css?family=Montserrat:300,400,500,700');
+
+body {
+  font-family: 'Montserrat', sans-serif;
+  background-color: #373741;
+}
+#title-box {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background-image: url('./title_background.jpg');
+  background-size: cover;
+  height: 25vw;
+}
+
+#bar {
+  display: flex;
+  flex-direction: row;
+}
+
+#slideshow {
+  width: 100vw;
+  height: 100%;
+  position: fixed;
+}
+.each-slide {
+  width: 100vw;
+  height: 95vh;
+  background-size: cover;
+}
+.title-container {
+  width: 100vw;
+  height: 100vh;
+  background-color: #121212cc;
+}
+.title-text {
+  padding-top: 100px;
+  padding-right: 100px;
+}
+#main-content {
+  display: flex;
+  flex-direction: row;
+  flex-wrap: wrap;
+}
+#project-cols {
+  column-count: 2;
+  column-width: 50%;
+}
+#about-content {
+  margin: 2.5vw;
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+}
+#about-content img {
+  max-width: 27.5vw;
+  height: auto;
+}
+#about-text {
+  padding-left: 2.5vw;
+  padding-right: 2.5vw;
+}
+
+#navbar {
+  display: inline;
+  flex-direction: row;
+}
+
+#resume {
+  display: flex;
+  justify-content: center;
+  align-content: stretch;
+  width: 100%;
+}
+
+.layout {
+  display: flex;
+  flex-direction: column;
+}
+
+.tab {
+  transition: color 0.3s;
+}
+.tab:hover {
+  color: white;
+}
+
+.project {
+  display: inline-block;
+  width: 100%;
+}
+.details {
+  margin-left: 0px;
+  margin-right: 0px;
+  width: 50vw;
+  margin-top: 0px;
+  margin: 10px;
+  color: #121212;
+}
+.available {
+  display: flex;
+  justify-content: space-between;
+}
+
+.footer {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-top: 15vh;
+  padding: 20px;
+  padding-left: 2.5vw;
+  padding-right: 2.5vw;
+  height: 130px;
+  background-color: #121212;
+}
+.footer-button-container {
+  height: 90px;
+  display: inline-block;
+  vertical-align: middle;
+}
+.icon {
+  margin: 10px;
+  height: 45px;
+  width: auto;
+}
+.small-icon {
+  height: 30px;
+  padding: 0px;
+  margin: 0px;
+  width: auto;
+}
