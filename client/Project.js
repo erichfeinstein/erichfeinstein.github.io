@@ -13,7 +13,6 @@ import {
 const styles = {
   card: {
     raised: true,
-    maxWidth: '45vw',
     margin: '2.5vw',
     borderRadius: '0px',
   },

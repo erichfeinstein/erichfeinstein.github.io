@@ -129,3 +129,14 @@ body {
   margin: 0px;
   width: auto;
 }
+
+@media screen and (max-width: 900px) {
+  #project-cols {
+    column-count: 1;
+    column-width: 100%;
+  }
+  .title-text {
+    padding: 60px;
+    padding-top: 50px;
+  }
+}

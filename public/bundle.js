@@ -856,7 +856,6 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var styles = {
   card: {
     raised: true,
-    maxWidth: '45vw',
     margin: '2.5vw',
     borderRadius: '0px'
   },
@@ -1106,9 +1105,8 @@ var projects = exports.projects = [{
   image: 'images/fight_or_fright.png',
   link: 'https://cwru-eecs390.itch.io/fight-or-fright'
 }, {
-  title: 'Roshamgo',
-  description: ['Play Rock, Paper, Scissors in a variety of formats, including a React-Native mobile app and a Discord bot'],
-  image: 'images/roshamgo.png'
+  title: 'More Soon!',
+  description: []
 }];
 
 /***/ }),
