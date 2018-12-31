@@ -7,7 +7,7 @@ export default class Footer extends React.Component {
       <div className="footer">
         <div className="footer-text">
           <Typography variant="h4">Eric Feinstein</Typography>
-          <Typography variant="h6">eric.feinstein@case.edu</Typography>
+          <Typography variant="h6">erichfeinstein@gmail.com</Typography>
           <Typography variant="h6">914-255-5074</Typography>
         </div>
         <div className="footer-button-container" align="right">
