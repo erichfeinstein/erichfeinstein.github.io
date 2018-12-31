@@ -256,28 +256,32 @@ var AboutCard = function (_React$Component) {
             { id: 'about-content' },
             _react2.default.createElement(
               'div',
-              null,
+              { id: 'about-content-main' },
               _react2.default.createElement('img', { src: '/images/headshot.JPG' }),
               _react2.default.createElement(
-                _core.Typography,
-                { align: 'left', variant: 'h2' },
-                'Eric Feinstein'
-              ),
-              _react2.default.createElement(
-                _core.Typography,
-                { align: 'left', variant: 'h5' },
-                'Software Developer in New York City'
-              ),
-              _react2.default.createElement('hr', null),
-              _react2.default.createElement(
-                _core.Typography,
-                { align: 'left', variant: 'subtitle1' },
-                'Bachelor of Arts in Computer Science'
-              ),
-              _react2.default.createElement(
-                _core.Typography,
-                { align: 'left', variant: 'subtitle1' },
-                'Case Western Reserve University'
+                'div',
+                { id: 'about-content-title' },
+                _react2.default.createElement(
+                  _core.Typography,
+                  { align: 'left', variant: 'h2' },
+                  'Eric Feinstein'
+                ),
+                _react2.default.createElement(
+                  _core.Typography,
+                  { align: 'left', variant: 'h6' },
+                  'Software Developer in New York City'
+                ),
+                _react2.default.createElement('hr', null),
+                _react2.default.createElement(
+                  _core.Typography,
+                  { align: 'left', variant: 'subtitle1' },
+                  'Bachelor of Arts in Computer Science'
+                ),
+                _react2.default.createElement(
+                  _core.Typography,
+                  { align: 'left', variant: 'subtitle1' },
+                  'Case Western Reserve University'
+                )
               )
             ),
             _react2.default.createElement(
@@ -993,8 +997,6 @@ var _react2 = _interopRequireDefault(_react);
 
 var _reactPdf = __webpack_require__(/*! react-pdf */ "./node_modules/react-pdf/dist/entry.js");
 
-var _core = __webpack_require__(/*! @material-ui/core */ "./node_modules/@material-ui/core/index.es.js");
-
 __webpack_require__(/*! react-pdf/dist/Page/AnnotationLayer.css */ "./node_modules/react-pdf/dist/Page/AnnotationLayer.css");
 
 var _Footer = __webpack_require__(/*! ./Footer */ "./client/Footer.js");
@@ -1028,10 +1030,10 @@ var ResumePage = function (_React$Component) {
         null,
         _react2.default.createElement(
           'div',
-          { id: 'resume', align: 'center', style: { margin: '1em' } },
+          { id: 'resume', align: 'center' },
           _react2.default.createElement(
             _reactPdf.Document,
-            { width: 700, file: 'documents/EricFeinsteinResume2018.pdf' },
+            { file: 'documents/EricFeinsteinResume2018.pdf' },
             _react2.default.createElement(_reactPdf.Page, { pageNumber: 1 })
           )
         ),

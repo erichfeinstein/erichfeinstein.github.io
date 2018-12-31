@@ -8,21 +8,23 @@ export default class AboutCard extends React.Component {
       <Fade in={true}>
         <div className="layout">
           <div id="about-content">
-            <div>
+            <div id="about-content-main">
               <img src="/images/headshot.JPG" />
-              <Typography align="left" variant="h2">
-                Eric Feinstein
-              </Typography>
-              <Typography align="left" variant="h5">
-                Software Developer in New York City
-              </Typography>
-              <hr />
-              <Typography align="left" variant="subtitle1">
-                Bachelor of Arts in Computer Science
-              </Typography>
-              <Typography align="left" variant="subtitle1">
-                Case Western Reserve University
-              </Typography>
+              <div id="about-content-title">
+                <Typography align="left" variant="h2">
+                  Eric Feinstein
+                </Typography>
+                <Typography align="left" variant="h6">
+                  Software Developer in New York City
+                </Typography>
+                <hr />
+                <Typography align="left" variant="subtitle1">
+                  Bachelor of Arts in Computer Science
+                </Typography>
+                <Typography align="left" variant="subtitle1">
+                  Case Western Reserve University
+                </Typography>
+              </div>
             </div>
             <Grow timeout={700} in={true}>
               <div id="about-text">

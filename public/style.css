@@ -3,6 +3,8 @@
 body {
   font-family: 'Montserrat', sans-serif;
   background-color: #373741;
+  overflow: hidden;
+  overflow-y: scroll;
 }
 #title-box {
   display: flex;
@@ -67,10 +69,8 @@ body {
 }
 
 #resume {
-  display: flex;
-  justify-content: center;
-  align-content: stretch;
-  width: 100%;
+  width: 100vw;
+  overflow: hidden;
 }
 
 .layout {
@@ -111,6 +111,7 @@ body {
   padding-left: 2.5vw;
   padding-right: 2.5vw;
   height: 130px;
+  width: 100%;
   background-color: #121212;
 }
 .footer-button-container {
@@ -138,5 +139,23 @@ body {
   .title-text {
     padding: 60px;
     padding-top: 50px;
+  }
+  #about-content-main {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  #about-content {
+    margin: 20px;
+    display: flex;
+    flex-direction: column;
+  }
+  #about-content img {
+    flex: 1;
+    width: 100%;
+    height: 100%;
+  }
+  #about-text {
+    padding: 0px;
   }
 }
