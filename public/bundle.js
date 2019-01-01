@@ -289,28 +289,28 @@ var AboutCard = function (_React$Component) {
                   _core.Typography,
                   {
                     style: {
-                      fontSize: this.state.width < 900 ? this.state.width * 0.065 : 50
+                      fontSize: this.state.width < 900 ? this.state.width * 0.065 : 34
                     },
                     variant: 'h2',
                     align: 'center'
                   },
                   'Eric Feinstein'
                 ),
-                _react2.default.createElement('hr', null),
                 _react2.default.createElement(
                   _core.Typography,
                   {
                     style: {
-                      fontSize: this.state.width < 900 ? this.state.width * 0.025 : 20
+                      fontSize: this.state.width < 900 ? this.state.width * 0.025 : 16
                     },
-                    align: 'center'
+                    align: 'center',
+                    variant: 'subtitle1'
                   },
-                  'Software Developer in New York City'
+                  'Software Developer in NYC'
                 )
               )
             ),
             _react2.default.createElement(
-              _core.Grow,
+              _core.Fade,
               { timeout: 700, 'in': true },
               _react2.default.createElement(
                 'div',
@@ -319,9 +319,9 @@ var AboutCard = function (_React$Component) {
                   _core.Typography,
                   {
                     style: {
-                      fontSize: this.state.width < 900 ? this.state.width * 0.065 : 40
+                      fontSize: this.state.width < 900 ? this.state.width * 0.065 : 34
                     },
-                    align: 'right',
+                    align: 'left',
                     variant: 'h2'
                   },
                   'About Me'

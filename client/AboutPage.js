@@ -1,5 +1,5 @@
 import React from 'react';
-import { Typography, Fade, Grow } from '@material-ui/core';
+import { Typography, Fade } from '@material-ui/core';
 import Footer from './Footer';
 
 export default class AboutCard extends React.Component {
@@ -30,33 +30,33 @@ export default class AboutCard extends React.Component {
                 <Typography
                   style={{
                     fontSize:
-                      this.state.width < 900 ? this.state.width * 0.065 : 50,
+                      this.state.width < 900 ? this.state.width * 0.065 : 34,
                   }}
                   variant="h2"
                   align="center"
                 >
                   Eric Feinstein
                 </Typography>
-                <hr />
                 <Typography
                   style={{
                     fontSize:
-                      this.state.width < 900 ? this.state.width * 0.025 : 20,
+                      this.state.width < 900 ? this.state.width * 0.025 : 16,
                   }}
                   align="center"
+                  variant="subtitle1"
                 >
-                  Software Developer in New York City
+                  Software Developer in NYC
                 </Typography>
               </div>
             </div>
-            <Grow timeout={700} in={true}>
+            <Fade timeout={700} in={true}>
               <div id="about-text">
                 <Typography
                   style={{
                     fontSize:
-                      this.state.width < 900 ? this.state.width * 0.065 : 40,
+                      this.state.width < 900 ? this.state.width * 0.065 : 34,
                   }}
-                  align="right"
+                  align="left"
                   variant="h2"
                 >
                   About Me
@@ -111,7 +111,7 @@ export default class AboutCard extends React.Component {
                   praise among specific communities.
                 </Typography>
               </div>
-            </Grow>
+            </Fade>
           </div>
           <Footer />
         </div>
