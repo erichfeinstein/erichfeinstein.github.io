@@ -9,8 +9,9 @@ export default class Footer extends React.Component {
           <Typography variant="h4">Eric Feinstein</Typography>
           <Typography variant="h6">erichfeinstein@gmail.com</Typography>
           <Typography variant="h6">914-255-5074</Typography>
+          <Typography variant="h6">Scarsdale, NY</Typography>
         </div>
-        <div className="footer-button-container" align="right">
+        <div align="right">
           <IconButton
             onClick={() => window.open('https://github.com/erichfeinstein')}
           >

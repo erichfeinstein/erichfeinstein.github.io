@@ -12,7 +12,6 @@ export default class NavBar extends React.Component {
       value: 3,
     };
     this.handleChange = this.handleChange.bind(this);
-    this.handleResume = this.handleResume.bind(this);
   }
 
   render() {
@@ -40,15 +39,9 @@ export default class NavBar extends React.Component {
     );
   }
 
-  handleResume = () => {
-    window.open('/documents/EricFeinsteinResume2018.pdf');
-    this.setState({
-      value: 3,
-    });
-  };
-
   handleChange = (event, value) => {
     event.preventDefault();
     this.setState({ value });
+    window.scrollTo(0, 0);
   };
 }

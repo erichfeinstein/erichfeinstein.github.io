@@ -237,13 +237,37 @@ var AboutCard = function (_React$Component) {
   _inherits(AboutCard, _React$Component);
 
   function AboutCard() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, AboutCard);
 
-    return _possibleConstructorReturn(this, (AboutCard.__proto__ || Object.getPrototypeOf(AboutCard)).apply(this, arguments));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = AboutCard.__proto__ || Object.getPrototypeOf(AboutCard)).call.apply(_ref, [this].concat(args))), _this), _this.state = { width: 0 }, _this.changeWidth = function () {
+      _this.setState({ width: window.innerWidth });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(AboutCard, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.changeWidth();
+      window.addEventListener('resize', this.changeWidth);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      window.removeEventListener('resize', this.changeWidth);
+    }
+  }, {
     key: 'render',
+
+
+    // eslint-disable-next-line complexity
     value: function render() {
       return _react2.default.createElement(
         _core.Fade,
@@ -263,24 +287,25 @@ var AboutCard = function (_React$Component) {
                 { id: 'about-content-title' },
                 _react2.default.createElement(
                   _core.Typography,
-                  { align: 'left', variant: 'h2' },
+                  {
+                    style: {
+                      fontSize: this.state.width < 900 ? this.state.width * 0.065 : 50
+                    },
+                    variant: 'h2',
+                    align: 'center'
+                  },
                   'Eric Feinstein'
-                ),
-                _react2.default.createElement(
-                  _core.Typography,
-                  { align: 'left', variant: 'h6' },
-                  'Software Developer in New York City'
                 ),
                 _react2.default.createElement('hr', null),
                 _react2.default.createElement(
                   _core.Typography,
-                  { align: 'left', variant: 'subtitle1' },
-                  'Bachelor of Arts in Computer Science'
-                ),
-                _react2.default.createElement(
-                  _core.Typography,
-                  { align: 'left', variant: 'subtitle1' },
-                  'Case Western Reserve University'
+                  {
+                    style: {
+                      fontSize: this.state.width < 900 ? this.state.width * 0.025 : 20
+                    },
+                    align: 'center'
+                  },
+                  'Software Developer in New York City'
                 )
               )
             ),
@@ -292,31 +317,53 @@ var AboutCard = function (_React$Component) {
                 { id: 'about-text' },
                 _react2.default.createElement(
                   _core.Typography,
-                  { align: 'right', variant: 'h2' },
+                  {
+                    style: {
+                      fontSize: this.state.width < 900 ? this.state.width * 0.065 : 40
+                    },
+                    align: 'right',
+                    variant: 'h2'
+                  },
                   'About Me'
                 ),
                 _react2.default.createElement('hr', null),
                 _react2.default.createElement(
                   _core.Typography,
-                  { variant: 'h6' },
+                  {
+                    style: {
+                      fontSize: 22
+                    }
+                  },
                   'I am a recent graduate of Case Western Reserve University in Cleveland, OH, with a major in Computer Science and a minor in Music. I am seeking a full-time position in software engineering, with interest in web development and mobile app development in media. I am proficient in the industry\'s most commonly used programming languages, including Java, JavaScript, C#, Swift and others.'
                 ),
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(
                   _core.Typography,
-                  { variant: 'h6' },
+                  {
+                    style: {
+                      fontSize: 22
+                    }
+                  },
                   'I have developed a few mobile applications, including MunchBox and MusiQuest, and I directed a group of 13 programmers and 6 artists to develop an online multiplayer game: Fight or Fright.'
                 ),
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(
                   _core.Typography,
-                  { variant: 'h6' },
+                  {
+                    style: {
+                      fontSize: 22
+                    }
+                  },
                   'During my undergraduate career at Case Western, I was an active member of Case Men\'s Glee Club, in which I held several positions over four years. The group has grown four times in size since I joined, and is now offered through Case Western Reserve University\'s Music Department.'
                 ),
                 _react2.default.createElement('br', null),
                 _react2.default.createElement(
                   _core.Typography,
-                  { variant: 'h6' },
+                  {
+                    style: {
+                      fontSize: 22
+                    }
+                  },
                   'In my free time, I also like to write and produce original music of a variety of genres and metal covers. My original music is published on Spotify, Apple Music, and other popular streaming platforms, and some of my metal covers have garnered praise among specific communities.'
                 )
               )
@@ -377,11 +424,7 @@ function _inherits(subClass, superClass) { if (typeof superClass !== "function" 
 var theme = (0, _styles.createMuiTheme)({
   typography: {
     useNextVariants: true,
-    fontFamily: '"Montserrat", sans-serif',
-    fontSize: 14,
-    fontWeightLight: 300,
-    fontWeightRegular: 400,
-    fontWeightMedium: 500
+    fontFamily: '"Montserrat", sans-serif'
   },
   palette: {
     primary: {
@@ -479,17 +522,22 @@ var Footer = function (_React$Component) {
           _react2.default.createElement(
             _core.Typography,
             { variant: 'h6' },
-            'eric.feinstein@case.edu'
+            'erichfeinstein@gmail.com'
           ),
           _react2.default.createElement(
             _core.Typography,
             { variant: 'h6' },
             '914-255-5074'
+          ),
+          _react2.default.createElement(
+            _core.Typography,
+            { variant: 'h6' },
+            'Scarsdale, NY'
           )
         ),
         _react2.default.createElement(
           'div',
-          { className: 'footer-button-container', align: 'right' },
+          { align: 'right' },
           _react2.default.createElement(
             _core.IconButton,
             {
@@ -645,7 +693,7 @@ function _possibleConstructorReturn(self, call) { if (!self) { throw new Referen
 
 function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
-var slideImages = ['images/slideshow/2.jpg', 'images/slideshow/5.jpg', 'images/slideshow/6.jpg', 'images/slideshow/7.jpg'];
+var slideImages = ['images/slideshow/2.jpg', 'images/slideshow/5.jpg'];
 
 var properties = {
   duration: 5000,
@@ -670,30 +718,56 @@ var LandingPage = function (_React$Component) {
         _reactSlideshowImage.Fade,
         _extends({ id: 'slideshow' }, properties),
         slideImages.map(function (img) {
-          return _react2.default.createElement(
-            'div',
-            {
-              className: 'each-slide',
-              style: { backgroundImage: 'url(' + img + ')' }
-            },
+          return (
+            // eslint-disable-next-line react/jsx-key
             _react2.default.createElement(
-              _core.Fade,
-              { timeout: 2500, 'in': true },
+              'div',
+              {
+                className: 'each-slide',
+                style: { backgroundImage: 'url(' + img + ')' }
+              },
               _react2.default.createElement(
-                'div',
-                { className: 'title-container' },
+                _core.Fade,
+                { timeout: 2500, 'in': true },
                 _react2.default.createElement(
                   'div',
-                  { className: 'title-text' },
+                  { className: 'title-container' },
                   _react2.default.createElement(
-                    _core.Typography,
-                    { align: 'right', variant: 'h1' },
-                    'Eric Feinstein'
-                  ),
-                  _react2.default.createElement(
-                    _core.Typography,
-                    { align: 'right', variant: 'h4' },
-                    'Full-Stack Software Developer in New York City'
+                    'div',
+                    { className: 'title-text' },
+                    _react2.default.createElement(
+                      _core.Typography,
+                      {
+                        align: 'right',
+                        variant: 'h1',
+                        style: {
+                          fontSize: '8vw'
+                        }
+                      },
+                      'Eric Feinstein'
+                    ),
+                    _react2.default.createElement(
+                      _core.Typography,
+                      {
+                        align: 'right',
+                        variant: 'h1',
+                        style: {
+                          fontSize: '4vw'
+                        }
+                      },
+                      'Full-Stack Software Developer'
+                    ),
+                    _react2.default.createElement(
+                      _core.Typography,
+                      {
+                        align: 'right',
+                        variant: 'h1',
+                        style: {
+                          fontSize: '4vw'
+                        }
+                      },
+                      'in New York City'
+                    )
                   )
                 )
               )
@@ -765,23 +839,16 @@ var NavBar = function (_React$Component) {
 
     var _this = _possibleConstructorReturn(this, (NavBar.__proto__ || Object.getPrototypeOf(NavBar)).call(this));
 
-    _this.handleResume = function () {
-      window.open('/documents/EricFeinsteinResume2018.pdf');
-      _this.setState({
-        value: 3
-      });
-    };
-
     _this.handleChange = function (event, value) {
       event.preventDefault();
       _this.setState({ value: value });
+      window.scrollTo(0, 0);
     };
 
     _this.state = {
       value: 3
     };
     _this.handleChange = _this.handleChange.bind(_this);
-    _this.handleResume = _this.handleResume.bind(_this);
     return _this;
   }
 
@@ -1017,12 +1084,33 @@ var ResumePage = function (_React$Component) {
   _inherits(ResumePage, _React$Component);
 
   function ResumePage() {
+    var _ref;
+
+    var _temp, _this, _ret;
+
     _classCallCheck(this, ResumePage);
 
-    return _possibleConstructorReturn(this, (ResumePage.__proto__ || Object.getPrototypeOf(ResumePage)).apply(this, arguments));
+    for (var _len = arguments.length, args = Array(_len), _key = 0; _key < _len; _key++) {
+      args[_key] = arguments[_key];
+    }
+
+    return _ret = (_temp = (_this = _possibleConstructorReturn(this, (_ref = ResumePage.__proto__ || Object.getPrototypeOf(ResumePage)).call.apply(_ref, [this].concat(args))), _this), _this.state = { width: 0 }, _this.changeWidth = function () {
+      _this.setState({ width: window.innerWidth });
+    }, _temp), _possibleConstructorReturn(_this, _ret);
   }
 
   _createClass(ResumePage, [{
+    key: 'componentDidMount',
+    value: function componentDidMount() {
+      this.changeWidth();
+      window.addEventListener('resize', this.changeWidth);
+    }
+  }, {
+    key: 'componentWillUnmount',
+    value: function componentWillUnmount() {
+      window.removeEventListener('resize', this.changeWidth);
+    }
+  }, {
     key: 'render',
     value: function render() {
       return _react2.default.createElement(
@@ -1034,7 +1122,7 @@ var ResumePage = function (_React$Component) {
           _react2.default.createElement(
             _reactPdf.Document,
             { file: 'documents/EricFeinsteinResume2018.pdf' },
-            _react2.default.createElement(_reactPdf.Page, { pageNumber: 1 })
+            _react2.default.createElement(_reactPdf.Page, { pageNumber: 1, width: this.state.width * 0.85 })
           )
         ),
         _react2.default.createElement(_Footer2.default, null)

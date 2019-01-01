@@ -3,6 +3,22 @@ import { Typography, Fade, Grow } from '@material-ui/core';
 import Footer from './Footer';
 
 export default class AboutCard extends React.Component {
+  state = { width: 0 };
+
+  componentDidMount() {
+    this.changeWidth();
+    window.addEventListener('resize', this.changeWidth);
+  }
+
+  componentWillUnmount() {
+    window.removeEventListener('resize', this.changeWidth);
+  }
+
+  changeWidth = () => {
+    this.setState({ width: window.innerWidth });
+  };
+
+  // eslint-disable-next-line complexity
   render() {
     return (
       <Fade in={true}>
@@ -11,28 +27,46 @@ export default class AboutCard extends React.Component {
             <div id="about-content-main">
               <img src="/images/headshot.JPG" />
               <div id="about-content-title">
-                <Typography align="left" variant="h2">
+                <Typography
+                  style={{
+                    fontSize:
+                      this.state.width < 900 ? this.state.width * 0.065 : 50,
+                  }}
+                  variant="h2"
+                  align="center"
+                >
                   Eric Feinstein
                 </Typography>
-                <Typography align="left" variant="h6">
-                  Software Developer in New York City
-                </Typography>
                 <hr />
-                <Typography align="left" variant="subtitle1">
-                  Bachelor of Arts in Computer Science
-                </Typography>
-                <Typography align="left" variant="subtitle1">
-                  Case Western Reserve University
+                <Typography
+                  style={{
+                    fontSize:
+                      this.state.width < 900 ? this.state.width * 0.025 : 20,
+                  }}
+                  align="center"
+                >
+                  Software Developer in New York City
                 </Typography>
               </div>
             </div>
             <Grow timeout={700} in={true}>
               <div id="about-text">
-                <Typography align="right" variant="h2">
+                <Typography
+                  style={{
+                    fontSize:
+                      this.state.width < 900 ? this.state.width * 0.065 : 40,
+                  }}
+                  align="right"
+                  variant="h2"
+                >
                   About Me
                 </Typography>
                 <hr />
-                <Typography variant="h6">
+                <Typography
+                  style={{
+                    fontSize: 22,
+                  }}
+                >
                   I am a recent graduate of Case Western Reserve University in
                   Cleveland, OH, with a major in Computer Science and a minor in
                   Music. I am seeking a full-time position in software
@@ -42,14 +76,22 @@ export default class AboutCard extends React.Component {
                   JavaScript, C#, Swift and others.
                 </Typography>
                 <br />
-                <Typography variant="h6">
+                <Typography
+                  style={{
+                    fontSize: 22,
+                  }}
+                >
                   I have developed a few mobile applications, including MunchBox
                   and MusiQuest, and I directed a group of 13 programmers and 6
                   artists to develop an online multiplayer game: Fight or
                   Fright.
                 </Typography>
                 <br />
-                <Typography variant="h6">
+                <Typography
+                  style={{
+                    fontSize: 22,
+                  }}
+                >
                   During my undergraduate career at Case Western, I was an
                   active member of Case Men's Glee Club, in which I held several
                   positions over four years. The group has grown four times in
@@ -57,7 +99,11 @@ export default class AboutCard extends React.Component {
                   Reserve University's Music Department.
                 </Typography>
                 <br />
-                <Typography variant="h6">
+                <Typography
+                  style={{
+                    fontSize: 22,
+                  }}
+                >
                   In my free time, I also like to write and produce original
                   music of a variety of genres and metal covers. My original
                   music is published on Spotify, Apple Music, and other popular

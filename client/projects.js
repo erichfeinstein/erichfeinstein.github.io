@@ -33,11 +33,4 @@ export const projects = [
     title: 'More Soon!',
     description: [],
   },
-  // {
-  //   title: 'Roshamgo',
-  //   description: [
-  //     'Play Rock, Paper, Scissors in a variety of formats, including a React-Native mobile app and a Discord bot',
-  //   ],
-  //   image: 'images/roshamgo.png',
-  // },
 ];
