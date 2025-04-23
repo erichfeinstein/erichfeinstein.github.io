@@ -1,0 +1,39 @@
+.sexy-header {
+    text-align: center;
+    padding: 40px 20px;
+    border-radius: 8px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
+    animation: headerPulse 3s infinite ease-in-out;
+    margin-bottom: 40px;
+  }
+  
+  @keyframes headerPulse {
+    0%, 100% {
+      transform: scale(1);
+    }
+    50% {
+      transform: scale(1.02);
+    }
+  }
+  
+  .sexy-header__name {
+    font-size: 3rem;
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    margin-bottom: 10px;
+  }
+  
+  .sexy-header__info {
+    font-size: 1.3rem;
+    margin: 4px 0;
+  }
+  
+  .sexy-header__link {
+    text-decoration: underline;
+    transition: color 0.3s ease;
+  }
+  
+  .sexy-header__link:hover {
+    color: #e0e0e0;
+    text-decoration: none;
+  }
