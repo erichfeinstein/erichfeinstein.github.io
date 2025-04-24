@@ -1,10 +1,10 @@
 {
   "files": {
-    "main.css": "/erichfeinstein/static/css/main.919d7328.css",
-    "main.js": "/erichfeinstein/static/js/main.edb44538.js",
-    "index.html": "/erichfeinstein/index.html",
-    "main.919d7328.css.map": "/erichfeinstein/static/css/main.919d7328.css.map",
-    "main.edb44538.js.map": "/erichfeinstein/static/js/main.edb44538.js.map"
+    "main.css": "/static/css/main.919d7328.css",
+    "main.js": "/static/js/main.edb44538.js",
+    "index.html": "/index.html",
+    "main.919d7328.css.map": "/static/css/main.919d7328.css.map",
+    "main.edb44538.js.map": "/static/js/main.edb44538.js.map"
   },
   "entrypoints": [
     "static/css/main.919d7328.css",
