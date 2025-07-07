@@ -1,4 +1,3 @@
-// filepath: /Users/ericfeinstein/Desktop/my-react-app/src/App.js
 import React from 'react';
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import Home from './components/Home';

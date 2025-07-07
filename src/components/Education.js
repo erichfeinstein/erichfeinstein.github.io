@@ -16,20 +16,43 @@ const educationItems = [
   }
 ];
 
+const EducationItem = ({ edu }) => (
+  <ListItem>
+    <ListItemText
+      primary={
+        <>
+          <Typography component="span" sx={{ fontSize: '1.4rem', fontWeight: 600 }}>
+            {edu.institution}
+          </Typography>
+          <br />
+          <Typography component="span" sx={{ fontSize: '1.2rem', fontWeight: 400 }}>
+            {edu.degree}
+          </Typography>
+        </>
+      }
+      secondary={`${edu.period} | ${edu.location}`}
+      secondaryTypographyProps={{ style: { color: '#bbbbbb', fontSize: '1rem' } }}
+    />
+  </ListItem>
+);
+
 const Education = () => {
   return (
-    <Box sx={{ mb: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Education
-      </Typography>
+    <Box
+      sx={{
+        p: 4,
+        maxWidth: 800,
+        mx: 'auto',
+        mt: 4,
+        backgroundColor: '#121212',
+        borderRadius: 2,
+        boxShadow: 3,
+        color: 'white',
+      }}
+    >
       <List dense>
         {educationItems.map((edu, index) => (
-          <ListItem key={index}>
-            <ListItemText
-              primary={`${edu.institution} - ${edu.degree}`}
-              secondary={`${edu.period} | ${edu.location}`}
-            />
-          </ListItem>
+          <EducationItem key={index} edu={edu} />
         ))}
       </List>
     </Box>

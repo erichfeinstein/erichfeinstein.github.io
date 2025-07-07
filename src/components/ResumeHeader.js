@@ -34,9 +34,6 @@ const ResumeHeader = () => {
   return (
     <Box sx={{ mb: 4, p: 2 }}>
       <ResumeHeader />
-      <Typography variant="h5" gutterBottom sx={{ mt: 2 }}>
-        About
-      </Typography>
       <Typography variant="body1">
         With over 5 years of experience, I am a front-end software engineer with
         a strong foundation in computer science and a wealth of knowledge in

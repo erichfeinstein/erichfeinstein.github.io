@@ -4,6 +4,7 @@ import { Box, Typography, List, ListItem, ListItemText } from '@mui/material';
 const experiences = [
   {
     company: "Grubhub",
+    logo: require('../assets/photos/grubhub.png'),
     title: "Senior Software Engineer",
     period: "Dec 2021 - Present",
     details: [
@@ -14,6 +15,7 @@ const experiences = [
   },
   {
     company: "Branding Brand",
+    logo: require('../assets/photos/bb.png'),
     title: "Development Manager",
     period: "June 2020 - Dec 2021",
     details: [
@@ -23,33 +25,63 @@ const experiences = [
   },
   {
     company: "Cedrus Digital",
+    logo: require('../assets/photos/cedrus.png'),
     title: "Software Engineer",
     period: "April 2019 - May 2020",
     details: [
       "Developed enterprise web application for an international auto rental company, scaffolded and built out pages for account management",
-      "Created reusable and well-tested components using React, partnered with design team to develop efficient and responsive solutions for a good user experience"
+      "Created reusable and well-tested components using React, partnered with design team to develop efficient and responsive solutions for a great user experience"
     ]
   }
 ];
 
 const Experience = () => {
   return (
-    <Box sx={{ mb: 4 }}>
-      <Typography variant="h5" gutterBottom>
-        Experience
-      </Typography>
+    <Box
+      sx={{
+        p: 4,
+        maxWidth: 800,
+        mx: 'auto',
+        mt: 4,
+        backgroundColor: '#121212',
+        borderRadius: 2,
+        boxShadow: 3,
+        color: 'white',
+      }}
+    >
       {experiences.map((exp, index) => (
-        <Box key={index} sx={{ mb: 2 }}>
-          <Typography variant="h6">
-            {exp.company} - {exp.title}
+        <Box key={index} sx={{ mb: 4 }}>
+          <Box
+            sx={{ 
+              display: 'flex', 
+              alignItems: 'center', 
+              justifyContent: 'space-between',
+              mb: 2,
+            }}
+          >
+            <Typography sx={{ fontSize: '1.8rem', fontWeight: 600 }}>
+              {exp.company}
+            </Typography>
+            <Box
+              component="img"
+              src={exp.logo}
+              alt={`${exp.company} logo`}
+              sx={{ width: 100, height: 100, objectFit: 'contain' }}
+            />
+          </Box>
+          <Typography sx={{ fontSize: '1.4rem', fontWeight: 400, mb: 1 }}>
+            {exp.title}
           </Typography>
-          <Typography variant="subtitle2" gutterBottom>
+          <Typography variant="subtitle2" gutterBottom sx={{ fontSize: '1.2rem', color: '#bbbbbb', mb: 2 }}>
             {exp.period}
           </Typography>
           <List dense>
             {exp.details.map((detail, idx) => (
               <ListItem key={idx}>
-                <ListItemText primary={detail} />
+                <ListItemText
+                  primary={detail}
+                  primaryTypographyProps={{ sx: { fontSize: '1.1rem' } }}
+                />
               </ListItem>
             ))}
           </List>
