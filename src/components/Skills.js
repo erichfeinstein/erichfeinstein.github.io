@@ -7,11 +7,11 @@ import '../styles/animations.css';
 const initialCategories = {
   Languages: ["JavaScript", "TypeScript", "Python", "Java"],
   "Markup & Styling": ["HTML", "CSS", "Sass"],
-  Frameworks: ["React", "React Native", "Redux", "Node"],
+  Frameworks: ["React", "React Native", "Redux", "Node", "Jest", "Jasmine"],
   APIs: ["REST APIs", "GraphQL"],
-  Tools: ["Git", "GitHub", "Jest", "Jasmine", "TDD", "Jenkins", "Spinnaker", "Datadog", "Sentry"],
+  Tools: ["Git", "GitHub", "Jenkins", "Spinnaker", "Datadog", "Sentry"],
   Databases: ["SQL", "PostgreSQL"],
-  "Coding Assistance": ["GitHub Copilot"]
+  "Coding Assistance": ["GitHub Copilot", "Cursor AI"]
 };
 
 const Skills = () => {
@@ -58,9 +58,6 @@ const Skills = () => {
         color: 'white',
       }}
     >
-      <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 3 }}>
-        Sort the skills alphabetically for a surprise!
-      </Typography>
       <DragDropContext onDragEnd={handleDragEnd}>
         {Object.entries(categories).map(([categoryName, skills]) => (
           <Box key={categoryName} sx={{ mb: 3 }}>
@@ -102,6 +99,9 @@ const Skills = () => {
           </Box>
         ))}
       </DragDropContext>
+      <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 3 }}>
+        Sort the skills alphabetically for a surprise!
+      </Typography>
     </Box>
   );
 };
