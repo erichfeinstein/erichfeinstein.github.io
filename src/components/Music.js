@@ -27,7 +27,7 @@ const Music = () => {
       </Typography>
       <Box sx={{ display: 'flex', justifyContent: 'center', mt: 4 }}>
         <iframe
-          src="https://samply.app/player/Sl4jNP6vw14nakUYZjr7"
+          src="https://samply.app/p/ivorLTFc2loWYeNEzfJ7?si=sUxJEaYbIBMM1tIPK5MFHPm2g2r2"
           width="800"
           height="600"
           style={{ border: '1px solid #ccc', borderRadius: '16px' }}
