@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, Suspense, lazy } from 'react';
 import { Routes, Route, Navigate } from 'react-router-dom';
 import About from './components/About';
 import Experience from './components/Experience';
@@ -8,6 +8,8 @@ import Music from './components/Music';
 import Nav from './components/shell/Nav';
 import CommandPalette from './components/shell/CommandPalette';
 
+const Background = lazy(() => import('./components/shell/Background'));
+
 function App() {
   const [paletteOpen, setPaletteOpen] = useState(false);
 
@@ -15,12 +17,8 @@ function App() {
     const onKey = (e) => {
       const tag = (e.target.tagName || '').toLowerCase();
       const typing = tag === 'input' || tag === 'textarea' || e.target.isContentEditable;
-      if (e.key === '/' && !typing) {
-        e.preventDefault();
-        setPaletteOpen(true);
-      } else if (e.key === 'Escape') {
-        setPaletteOpen(false);
-      }
+      if (e.key === '/' && !typing) { e.preventDefault(); setPaletteOpen(true); }
+      else if (e.key === 'Escape') { setPaletteOpen(false); }
     };
     window.addEventListener('keydown', onKey);
     return () => window.removeEventListener('keydown', onKey);
@@ -28,6 +26,7 @@ function App() {
 
   return (
     <>
+      <Suspense fallback={null}><Background /></Suspense>
       <Nav onOpenPalette={() => setPaletteOpen(true)} />
       <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
       <main style={{ paddingTop: 64, paddingInline: 24, maxWidth: 'var(--max-content)', margin: '0 auto' }}>
