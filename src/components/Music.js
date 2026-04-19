@@ -6,12 +6,14 @@ export default function Music() {
     <div>
       <SectionHeader label="now playing">music</SectionHeader>
       <p style={{ fontSize: '1.1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
-        Music is my passion. I play guitar, sing, and have been taking drum lessons lately. Writing
-        songs and jamming connects me to the world. I'm in a few bands and produce on the side
-        and I've played live at several venues in New York City.
+        Music is the other thing. I play guitar, sing, and lately I've been taking drum lessons.
+        Writing songs and jamming with other people is what connects me to my community — some
+        of the best nights of the last few years have been in rehearsal rooms with people I love.
+        I'm in a few bands, produce stuff on the side, and I've played live around New York City.
       </p>
       <p style={{ color: 'var(--fg-dim)', marginBottom: '2rem' }}>
-        Below is my Samply, where I frequently upload new jams. Thanks for listening.
+        What's below is my Samply — where I dump works-in-progress. Some are finished, most aren't.
+        Poke around.
       </p>
       <div style={{
         border: '1px solid var(--fg-faint)',
