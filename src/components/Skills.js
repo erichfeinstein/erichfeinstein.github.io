@@ -1,8 +1,7 @@
 import React, { useState } from 'react';
-import { Box, Typography, Chip, Stack, Tooltip } from '@mui/material';
+import { Box, Typography, Chip, Stack } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import confetti from 'canvas-confetti';
-import '../styles/animations.css';
 
 const initialCategories = {
   Languages: ["JavaScript", "TypeScript", "Python", "Java"],
