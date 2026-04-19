@@ -35,7 +35,7 @@ function App() {
       <Suspense fallback={null}><Background /></Suspense>
       <Nav onOpenPalette={() => setPaletteOpen(true)} />
       <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
-      <main style={{ paddingTop: 64, paddingInline: 24, maxWidth: 'var(--max-content)', margin: '0 auto' }}>
+      <main style={{ paddingTop: 64, paddingInline: 24, paddingBottom: 96, maxWidth: 'var(--max-content)', margin: '0 auto' }}>
         <AnimatePresence mode="wait">
           <motion.div
             key={location.pathname}
