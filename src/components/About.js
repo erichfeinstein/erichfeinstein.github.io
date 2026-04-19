@@ -34,7 +34,7 @@ export default function About() {
         alignItems: 'start',
       }}>
         <p style={{ fontSize: '1.1rem', lineHeight: 1.7 }}>
-          With over 5 years of experience, I am a front-end software engineer with a strong
+          With 7 years of experience, I am a front-end software engineer with a strong
           foundation in computer science and extensive knowledge of modern TypeScript and React.
           I thrive on collaborating with designers, product owners, and fellow engineers to
           create outstanding user experiences.
