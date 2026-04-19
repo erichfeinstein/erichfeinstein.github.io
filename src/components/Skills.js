@@ -1,108 +1,97 @@
 import React, { useState } from 'react';
-import { Box, Typography, Chip, Stack } from '@mui/material';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import confetti from 'canvas-confetti';
+import SectionHeader from './shell/SectionHeader';
 
 const initialCategories = {
-  Languages: ["JavaScript", "TypeScript", "Python", "Java"],
-  "Markup & Styling": ["HTML", "CSS", "Sass"],
-  Frameworks: ["React", "React Native", "Redux", "Node", "Jest", "Jasmine"],
-  APIs: ["REST APIs", "GraphQL"],
-  Tools: ["Git", "GitHub", "Jenkins", "Spinnaker", "Datadog", "Sentry"],
-  Databases: ["SQL", "PostgreSQL"],
-  "Coding Assistance": ["GitHub Copilot", "Cursor AI"]
+  Languages: ['JavaScript', 'TypeScript', 'Python', 'Java'],
+  'Markup & Styling': ['HTML', 'CSS', 'Sass'],
+  Frameworks: ['React', 'React Native', 'Redux', 'Node', 'Jest', 'Jasmine'],
+  APIs: ['REST APIs', 'GraphQL'],
+  Tools: ['Git', 'GitHub', 'Jenkins', 'Spinnaker', 'Datadog', 'Sentry'],
+  Databases: ['SQL', 'PostgreSQL'],
+  'Coding Assistance': ['GitHub Copilot', 'Cursor AI', 'Claude Code'],
 };
 
-const Skills = () => {
+const isSortedAlphabetically = (arr) => arr.join() === [...arr].sort().join();
+
+const triggerConfetti = () => {
+  for (let i = 0; i < 10; i++) {
+    confetti({ particleCount: 20, spread: 70, origin: { x: Math.random(), y: Math.random() } });
+  }
+};
+
+const Chip = React.forwardRef(({ children, dragging, ...rest }, ref) => (
+  <span
+    ref={ref}
+    {...rest}
+    style={{
+      ...(rest.style || {}),
+      padding: '4px 10px',
+      border: '1px solid var(--fg-faint)',
+      borderRadius: 999,
+      color: 'var(--fg)',
+      background: dragging ? 'var(--fg-faint)' : 'transparent',
+      cursor: 'grab',
+      userSelect: 'none',
+    }}
+  >
+    {children}
+  </span>
+));
+
+export default function Skills() {
   const [categories, setCategories] = useState(initialCategories);
-
-  const isSortedAlphabetically = (arr) => {
-    const sortedArr = [...arr].sort();
-    return arr.join() === sortedArr.join();
-  };
-
-  const triggerFullScreenConfetti = () => {
-    for (let i = 0; i < 10; i++) {
-      confetti({
-        particleCount: 20,
-        spread: 70,
-        origin: { x: Math.random(), y: Math.random() },
-      });
-    }
-  };
 
   const handleDragEnd = (result) => {
     if (!result.destination) return;
     if (result.source.droppableId !== result.destination.droppableId) return;
     const category = result.source.droppableId;
     const items = Array.from(categories[category]);
-    const [reorderedItem] = items.splice(result.source.index, 1);
-    items.splice(result.destination.index, 0, reorderedItem);
+    const [moved] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, moved);
     setCategories((prev) => ({ ...prev, [category]: items }));
-    if (isSortedAlphabetically(items)) {
-      triggerFullScreenConfetti();
-    }
+    if (isSortedAlphabetically(items)) triggerConfetti();
   };
 
   return (
-    <Box
-      sx={{
-        p: 4,
-        maxWidth: 800,
-        mx: 'auto',
-        mt: 4,
-        backgroundColor: '#121212',
-        borderRadius: 2,
-        boxShadow: 3,
-        color: 'white',
-      }}
-    >
+    <div>
+      <SectionHeader label="skills">things i use</SectionHeader>
+      <p style={{ color: 'var(--fg-dim)', marginBottom: '2rem' }}>
+        sort any category alphabetically for a surprise.
+      </p>
       <DragDropContext onDragEnd={handleDragEnd}>
         {Object.entries(categories).map(([categoryName, skills]) => (
-          <Box key={categoryName} sx={{ mb: 3 }}>
-            <Typography variant="h6" gutterBottom sx={{ mb: 1 }}>
-              {categoryName}
-            </Typography>
+          <div key={categoryName} style={{ marginBottom: '1.75rem' }}>
+            <div className="section-label">{'// '}{categoryName.toLowerCase()}</div>
             <Droppable droppableId={categoryName} direction="horizontal">
               {(provided) => (
-                <Stack
-                  direction="row"
-                  flexWrap="wrap"
-                  justifyContent="flex-start"
-                  columnGap={1} // gap between chips horizontally
-                  rowGap={1}    // gap between rows
+                <div
                   ref={provided.innerRef}
                   {...provided.droppableProps}
+                  style={{ display: 'flex', flexWrap: 'wrap', gap: 8 }}
                 >
                   {skills.map((skill, index) => (
                     <Draggable key={skill} draggableId={skill} index={index}>
-                      {(provided) => (
+                      {(p, snapshot) => (
                         <Chip
-                          label={skill}
-                          sx={{
-                            cursor: 'grab',
-                            backgroundColor: 'white',
-                            color: 'black'
-                          }}
-                          ref={provided.innerRef}
-                          {...provided.draggableProps}
-                          {...provided.dragHandleProps}
-                        />
+                          ref={p.innerRef}
+                          dragging={snapshot.isDragging}
+                          {...p.draggableProps}
+                          {...p.dragHandleProps}
+                        >
+                          {skill}
+                        </Chip>
                       )}
                     </Draggable>
                   ))}
                   {provided.placeholder}
-                </Stack>
+                </div>
               )}
             </Droppable>
-          </Box>
+          </div>
         ))}
       </DragDropContext>
-      <Typography variant="h5" gutterBottom sx={{ textAlign: 'center', mb: 3 }}>
-        Sort the skills alphabetically for a surprise!
-      </Typography>
-    </Box>
+    </div>
   );
-};
-
-export default Skills;
+}
