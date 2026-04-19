@@ -1,6 +1,6 @@
 import matter from 'gray-matter';
 
-function parsePost(raw) {
+export function parsePost(raw) {
   const { data, content } = matter(raw);
   return {
     title: data.title,
@@ -12,29 +12,12 @@ function parsePost(raw) {
   };
 }
 
-function loadPostsWebpack() {
-  const req = require.context('!!raw-loader!../content/posts', false, /\.md$/);
-  return req.keys().map((key) => parsePost(req(key).default));
-}
+const req = require.context('!!raw-loader!../content/posts', false, /\.md$/);
 
-function loadPostsNode() {
-  // CRA's react-app lint forbids CommonJS in ES modules; this branch only runs
-  // under Jest/Node, where require() is the idiomatic way to reach fs/path.
-  // eslint-disable-next-line
-  const fs = require('fs');
-  // eslint-disable-next-line
-  const path = require('path');
-  const dir = path.resolve(__dirname, '../content/posts');
-  return fs
-    .readdirSync(dir)
-    .filter((f) => f.endsWith('.md'))
-    .map((f) => parsePost(fs.readFileSync(path.join(dir, f), 'utf8')));
-}
-
-const _posts = (typeof require.context === 'function'
-  ? loadPostsWebpack()
-  : loadPostsNode()
-).sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
+const _posts = req
+  .keys()
+  .map((key) => parsePost(req(key).default))
+  .sort((a, b) => (a.date < b.date ? 1 : a.date > b.date ? -1 : 0));
 
 export function getAllPosts() {
   return _posts.map(({ content, ...meta }) => meta);
