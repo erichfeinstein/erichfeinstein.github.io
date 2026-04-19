@@ -2,17 +2,17 @@
 // Used via jest moduleNameMapper instead of posts.js (which uses require.context).
 const fs = require('fs');
 const path = require('path');
-const matter = require('gray-matter');
+const fm = require('front-matter');
 
 function parsePost(raw) {
-  const { data, content } = matter(raw);
+  const { attributes, body } = fm(raw);
   return {
-    title: data.title,
-    date: data.date,
-    slug: data.slug,
-    excerpt: data.excerpt,
-    tags: data.tags || [],
-    content,
+    title: attributes.title,
+    date: attributes.date,
+    slug: attributes.slug,
+    excerpt: attributes.excerpt,
+    tags: attributes.tags || [],
+    content: body,
   };
 }
 

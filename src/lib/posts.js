@@ -1,14 +1,14 @@
-import matter from 'gray-matter';
+import fm from 'front-matter';
 
 export function parsePost(raw) {
-  const { data, content } = matter(raw);
+  const { attributes, body } = fm(raw);
   return {
-    title: data.title,
-    date: data.date,
-    slug: data.slug,
-    excerpt: data.excerpt,
-    tags: data.tags || [],
-    content,
+    title: attributes.title,
+    date: attributes.date,
+    slug: attributes.slug,
+    excerpt: attributes.excerpt,
+    tags: attributes.tags || [],
+    content: body,
   };
 }
 
