@@ -9,6 +9,8 @@ import Music from './components/Music';
 import Nav from './components/shell/Nav';
 import CommandPalette from './components/shell/CommandPalette';
 import Intro from './components/shell/Intro';
+import BlogList from './components/blog/BlogList';
+import BlogPost from './components/blog/BlogPost';
 
 const Background = lazy(() => import('./components/shell/Background'));
 
@@ -48,6 +50,8 @@ function App() {
               <Route path="/education" element={<Education />} />
               <Route path="/skills" element={<Skills />} />
               <Route path="/music" element={<Music />} />
+              <Route path="/blog" element={<BlogList />} />
+              <Route path="/blog/:slug" element={<BlogPost />} />
               <Route path="*" element={<Navigate to="/" replace />} />
             </Routes>
           </motion.div>
