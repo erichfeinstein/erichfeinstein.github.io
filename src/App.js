@@ -7,6 +7,7 @@ import Skills from './components/Skills';
 import Music from './components/Music';
 import Nav from './components/shell/Nav';
 import CommandPalette from './components/shell/CommandPalette';
+import Intro from './components/shell/Intro';
 
 const Background = lazy(() => import('./components/shell/Background'));
 
@@ -26,6 +27,7 @@ function App() {
 
   return (
     <>
+      <Intro />
       <Suspense fallback={null}><Background /></Suspense>
       <Nav onOpenPalette={() => setPaletteOpen(true)} />
       <CommandPalette open={paletteOpen} onOpenChange={setPaletteOpen} />
