@@ -53,10 +53,11 @@ const fragment = `
     float n = snoise(p + 2.0 * r);
 
     vec3 base   = vec3(0.019, 0.019, 0.027);
-    vec3 violet = vec3(0.25, 0.05, 0.45);
-    vec3 cyan   = vec3(0.0, 0.5, 0.6);
-    vec3 col = base + 0.06 * mix(violet, cyan, 0.5 + 0.5 * n);
-    col += 0.02 * r.y;
+    vec3 violet = vec3(0.35, 0.08, 0.60);
+    vec3 cyan   = vec3(0.0, 0.55, 0.70);
+    vec3 col = base + 0.18 * mix(violet, cyan, 0.5 + 0.5 * n);
+    col += 0.06 * r.y;
+    col += 0.04 * snoise(p * 3.0 + t);
 
     gl_FragColor = vec4(col, 1.0);
   }
@@ -98,9 +99,24 @@ export default function Background() {
   }
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: -1 }} aria-hidden="true">
+    <div
+      style={{
+        position: 'fixed',
+        top: 0,
+        left: 0,
+        width: '100vw',
+        height: '100vh',
+        zIndex: -1,
+      }}
+      aria-hidden="true"
+    >
       <Suspense fallback={<div style={gradientFallback} />}>
-        <Canvas orthographic camera={{ position: [0, 0, 1] }} dpr={[1, 1.5]}>
+        <Canvas
+          orthographic
+          camera={{ position: [0, 0, 1] }}
+          dpr={[1, 1.5]}
+          style={{ width: '100%', height: '100%', display: 'block' }}
+        >
           <ShaderPlane />
         </Canvas>
       </Suspense>

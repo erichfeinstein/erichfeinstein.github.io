@@ -1,10 +1,18 @@
 import React from 'react';
-import { useLocation } from 'react-router-dom';
+import { NavLink, useLocation } from 'react-router-dom';
 
-const sectionLabel = (path) => {
-  if (path === '/' || path === '') return 'about';
-  if (path.startsWith('/blog/')) return `blog / ${path.slice('/blog/'.length)}`;
-  return path.slice(1);
+const SECTIONS = [
+  { label: 'about',      path: '/' },
+  { label: 'experience', path: '/experience' },
+  { label: 'education',  path: '/education' },
+  { label: 'skills',     path: '/skills' },
+  { label: 'music',      path: '/music' },
+  { label: 'blog',       path: '/blog' },
+];
+
+const isActive = (pathname, path) => {
+  if (path === '/') return pathname === '/';
+  return pathname === path || pathname.startsWith(path + '/');
 };
 
 export default function Nav({ onOpenPalette }) {
@@ -19,23 +27,55 @@ export default function Nav({ onOpenPalette }) {
         background: 'rgba(5,5,7,0.55)',
         borderBottom: '1px solid var(--fg-faint)',
         fontSize: '0.95rem',
+        overflow: 'hidden',
       }}
     >
-      <span style={{ color: 'var(--fg-dim)' }}>~/eric $ cd&nbsp;</span>
-      <span className="blink-cursor">{sectionLabel(pathname)}</span>
+      <span style={{ color: 'var(--fg-dim)', whiteSpace: 'nowrap' }}>~/eric $</span>
+      <nav
+        style={{
+          display: 'flex',
+          gap: 14,
+          overflowX: 'auto',
+          scrollbarWidth: 'none',
+        }}
+      >
+        {SECTIONS.map((s) => {
+          const active = isActive(pathname, s.path);
+          return (
+            <NavLink
+              key={s.path}
+              to={s.path}
+              end={s.path === '/'}
+              style={{
+                textDecoration: 'none',
+                color: active ? 'var(--fg)' : 'var(--fg-dim)',
+                whiteSpace: 'nowrap',
+                paddingBottom: 2,
+                borderBottom: active ? '1px solid var(--fg)' : '1px solid transparent',
+                transition: 'color 150ms, border-color 150ms',
+              }}
+              onMouseEnter={(e) => { if (!active) e.currentTarget.style.color = 'var(--fg)'; }}
+              onMouseLeave={(e) => { if (!active) e.currentTarget.style.color = 'var(--fg-dim)'; }}
+            >
+              {s.label}
+            </NavLink>
+          );
+        })}
+      </nav>
       <div style={{ flex: 1 }} />
       <button
         onClick={onOpenPalette}
         aria-label="Open command palette"
         style={{
           background: 'transparent',
-          color: 'var(--fg)',
+          color: 'var(--fg-dim)',
           border: '1px solid var(--fg-faint)',
           borderRadius: 6,
           padding: '4px 10px',
           fontFamily: 'inherit',
           fontSize: '0.85rem',
           cursor: 'pointer',
+          whiteSpace: 'nowrap',
         }}
       >
         press <kbd style={{ padding: '0 4px', border: '1px solid var(--fg-faint)', borderRadius: 3 }}>/</kbd>

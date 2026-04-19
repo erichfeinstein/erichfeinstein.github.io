@@ -19,7 +19,9 @@ html, body {
   min-height: 100%;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
+  scrollbar-width: none;
 }
+html::-webkit-scrollbar, body::-webkit-scrollbar { display: none; }
 
 a {
   color: var(--fg);
