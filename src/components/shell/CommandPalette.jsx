@@ -6,7 +6,6 @@ import { getAllPosts } from '../../lib/posts';
 const SECTIONS = [
   { label: 'About',      path: '/' },
   { label: 'Experience', path: '/experience' },
-  { label: 'Education',  path: '/education' },
   { label: 'Skills',     path: '/skills' },
   { label: 'Music',      path: '/music' },
   { label: 'Blog',       path: '/blog' },

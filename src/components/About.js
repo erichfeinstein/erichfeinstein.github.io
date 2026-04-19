@@ -16,11 +16,15 @@ export default function About() {
     <div>
       <SectionHeader label="whoami">eric feinstein</SectionHeader>
 
-      <div style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)', marginBottom: '2rem', color: 'var(--fg-dim)' }}>
+      <div style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)', marginBottom: '0.5rem', color: 'var(--fg-dim)' }}>
         i am a{' '}
         <GlitchText duration={500} trigger={roleIdx} className="rainbow-text">
           {ROLES[roleIdx]}
         </GlitchText>
+      </div>
+
+      <div style={{ color: 'var(--fg-dim)', fontSize: '0.85rem', marginBottom: '2rem' }}>
+        BA, Computer Science · Case Western Reserve '18 &nbsp;·&nbsp; Fullstack Academy '19
       </div>
 
       <div style={{
