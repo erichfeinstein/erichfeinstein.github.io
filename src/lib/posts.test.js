@@ -20,10 +20,10 @@ describe('posts loader', () => {
   });
 
   test('getPostBySlug returns full post content', () => {
-    const p = getPostBySlug('hello-this-site-is-alive');
+    const p = getPostBySlug('claude-redesigned-my-website');
     expect(p).not.toBeNull();
-    expect(p.title).toBe('hello, this site is alive now');
-    expect(p.content).toMatch(/first post/);
+    expect(p.title).toBe('i let claude redesign my website');
+    expect(p.content).toMatch(/full redesign/i);
   });
 
   test('getPostBySlug returns null for unknown slug', () => {
