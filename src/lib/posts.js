@@ -1,22 +1,25 @@
 import matter from 'gray-matter';
 
+function parsePost(raw) {
+  const { data, content } = matter(raw);
+  return {
+    title: data.title,
+    date: data.date,
+    slug: data.slug,
+    excerpt: data.excerpt,
+    tags: data.tags || [],
+    content,
+  };
+}
+
 function loadPostsWebpack() {
   const req = require.context('!!raw-loader!../content/posts', false, /\.md$/);
-  return req.keys().map((key) => {
-    const raw = req(key).default;
-    const { data, content } = matter(raw);
-    return {
-      title: data.title,
-      date: data.date,
-      slug: data.slug,
-      excerpt: data.excerpt,
-      tags: data.tags || [],
-      content,
-    };
-  });
+  return req.keys().map((key) => parsePost(req(key).default));
 }
 
 function loadPostsNode() {
+  // CRA's react-app lint forbids CommonJS in ES modules; this branch only runs
+  // under Jest/Node, where require() is the idiomatic way to reach fs/path.
   // eslint-disable-next-line
   const fs = require('fs');
   // eslint-disable-next-line
@@ -25,18 +28,7 @@ function loadPostsNode() {
   return fs
     .readdirSync(dir)
     .filter((f) => f.endsWith('.md'))
-    .map((f) => {
-      const raw = fs.readFileSync(path.join(dir, f), 'utf8');
-      const { data, content } = matter(raw);
-      return {
-        title: data.title,
-        date: data.date,
-        slug: data.slug,
-        excerpt: data.excerpt,
-        tags: data.tags || [],
-        content,
-      };
-    });
+    .map((f) => parsePost(fs.readFileSync(path.join(dir, f), 'utf8')));
 }
 
 const _posts = (typeof require.context === 'function'
