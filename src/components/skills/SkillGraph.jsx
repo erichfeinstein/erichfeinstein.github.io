@@ -29,7 +29,7 @@ initialEdges.forEach(([s, t]) => {
 
 function nodeRadius(id) {
   const deg = degreeMap.get(id) || 0;
-  return 3 + Math.min(deg, 7) * 0.8;
+  return 5 + Math.min(deg, 7) * 1.2;
 }
 
 function nodeColor(cat) {
@@ -174,24 +174,23 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
     if (focusedId) {
       const node = nodes.find((n) => n.id === focusedId);
       if (node) {
-        node.fx = node.x;
-        node.fy = node.y;
+        // Snap the focused node to the center of the viewport so it's always easy to read
+        node.fx = size.w / 2;
+        node.fy = size.h / 2;
         focusPinnedRef.current = focusedId;
         setPinnedIds((p) => new Set([...p, focusedId]));
         setHoveredId(focusedId);
-        sim.alpha(0.3).restart();
+        sim.alpha(0.5).restart();
       }
     } else {
       setHoveredId(null);
     }
-  }, [focusedId]);
+  }, [focusedId, size.w, size.h]);
 
-  // Mouse over container: gentle drift
-  const handleMouseEnter = useCallback(() => {
-    simRef.current?.sim.alphaTarget(0.01).restart();
-  }, []);
+  // No idle drift — simulation only runs when nudged by an explicit action
+  // (focus change, pin/unpin, background click, resize).
+  const handleMouseEnter = useCallback(() => {}, []);
   const handleMouseLeave = useCallback(() => {
-    simRef.current?.sim.alphaTarget(0);
     if (!focusedId) setHoveredId(null);
   }, [focusedId]);
 
