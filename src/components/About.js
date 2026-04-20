@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 import GlitchText from './shell/GlitchText';
 import SectionHeader from './shell/SectionHeader';
 import TradingCard from './about/TradingCard';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 const ROLES = [
   'front-end engineer',
@@ -16,6 +17,7 @@ const ROLES = [
 
 export default function About() {
   const [roleIdx, setRoleIdx] = useState(0);
+  const isMobile = useIsMobile();
 
   useEffect(() => {
     const id = setInterval(() => setRoleIdx((i) => (i + 1) % ROLES.length), 3000);
@@ -35,7 +37,7 @@ export default function About() {
         </div>
 
         <div style={{ color: 'var(--fg-dim)', fontSize: '0.85rem', marginBottom: '2rem' }}>
-          BA, Computer Science · Case Western Reserve '18 &nbsp;·&nbsp; Fullstack Academy '19
+          BA, Computer Science · Case Western Reserve&nbsp;'18 &nbsp;·&nbsp; Fullstack Academy&nbsp;'19
         </div>
 
         <p style={{ fontSize: '1.1rem', lineHeight: 1.7 }}>
@@ -48,7 +50,17 @@ export default function About() {
 
       {/* Offset so the card's top aligns with 'eric feinstein', not '// whoami' */}
       <div className="about-card">
-        <TradingCard src="/me.jpg" alt="eric feinstein" />
+        {isMobile ? (
+          <div style={{ width: 220, border: '1px solid var(--fg-faint)', lineHeight: 0 }}>
+            <img
+              src="/me.jpg"
+              alt="eric feinstein"
+              style={{ width: '100%', height: 'auto', display: 'block' }}
+            />
+          </div>
+        ) : (
+          <TradingCard src="/me.jpg" alt="eric feinstein" />
+        )}
       </div>
 
       <style>{`
