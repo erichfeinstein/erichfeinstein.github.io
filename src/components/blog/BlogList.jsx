@@ -7,7 +7,7 @@ export default function BlogList() {
   const posts = getAllPosts();
   return (
     <div>
-      <SectionHeader label="blog">writing</SectionHeader>
+      <SectionHeader label="blog">thoughts</SectionHeader>
       {posts.length === 0 && <p style={{ color: 'var(--fg-dim)' }}>nothing here yet.</p>}
       <ul style={{ listStyle: 'none', display: 'flex', flexDirection: 'column', gap: '2rem' }}>
         {posts.map((p) => (
