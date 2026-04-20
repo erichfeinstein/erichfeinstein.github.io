@@ -368,11 +368,27 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
               <stop offset="75%" stopColor="#00e5ff" stopOpacity="0.35" />
               <stop offset="100%" stopColor="#00e5ff" stopOpacity="0" />
             </radialGradient>
-            <linearGradient id="pin-text" x1="0%" y1="0%" x2="100%" y2="0%">
-              <stop offset="0%" stopColor="#ff2bd6" />
-              <stop offset="33%" stopColor="#00e5ff" />
-              <stop offset="66%" stopColor="#00ff88" />
-              <stop offset="100%" stopColor="#ff2bd6" />
+            <linearGradient
+              id="pin-text"
+              x1="0"
+              y1="0"
+              x2="240"
+              y2="0"
+              gradientUnits="userSpaceOnUse"
+              spreadMethod="repeat"
+            >
+              <animateTransform
+                attributeName="gradientTransform"
+                type="translate"
+                from="-240 0"
+                to="240 0"
+                dur="3s"
+                repeatCount="indefinite"
+              />
+              <stop offset="0" stopColor="#ff2bd6" />
+              <stop offset="0.33" stopColor="#00e5ff" />
+              <stop offset="0.66" stopColor="#00ff88" />
+              <stop offset="1" stopColor="#ff2bd6" />
             </linearGradient>
             <style>{`
               .skill-label { paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; transition: opacity 180ms ease-out; }
