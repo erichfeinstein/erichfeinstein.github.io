@@ -29,7 +29,7 @@ Given what 11 has been up to — calculator bugs that trended, a story about an 
 
 Where I expected pain, I got almost none. Proton handles Steam on Linux well enough that most of my library runs fine, and a few games actually perform a little better than they did on Windows. The holdouts are the anti-cheat-gated ones, and for those I reboot into Windows. No drama.
 
-## where the time actually went
+## side quests
 
 Two things took real effort:
 
