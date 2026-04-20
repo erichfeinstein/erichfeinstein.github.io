@@ -24,6 +24,7 @@ function useCardTilt() {
 export default function TradingCard({ src, alt }) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
+  const [flipped, setFlipped] = useState(false);
   const { ref, onMouseMove, onMouseLeave: tiltLeave, nx, ny, active } = useCardTilt();
 
   if (reduced) {
@@ -32,7 +33,6 @@ export default function TradingCard({ src, alt }) {
         style={{
           width: 220,
           border: '1px solid var(--fg-faint)',
-          transform: 'rotate(-1.5deg)',
           display: 'inline-block',
           lineHeight: 0,
         }}
@@ -47,18 +47,18 @@ export default function TradingCard({ src, alt }) {
     setHover(false);
     tiltLeave(e);
   };
+  const handleClick = () => setFlipped((f) => !f);
 
-  // Glow opacity: 1 at cursor center, 0 at edges
   const proximity = active
     ? Math.max(0, Math.min(1, 1 - 2 * Math.max(Math.abs(nx), Math.abs(ny))))
     : 0;
 
-  // Balatro-style: aggressive 3D tilt + slight lift + scale pop while hovering.
+  const flipRot = flipped ? ' rotateY(180deg)' : '';
   const cardTransform = active
-    ? `perspective(700px) translateZ(18px) rotateX(${-ny * 22}deg) rotateY(${nx * 22}deg) rotate(-1.5deg) scale(1.05)`
+    ? `perspective(700px) translateZ(18px) rotateX(${-ny * 22}deg) rotateY(${nx * 22}deg) scale(1.05)${flipRot}`
     : hover
-    ? 'perspective(700px) translateZ(10px) rotate(-1.5deg) scale(1.03)'
-    : 'rotate(-1.5deg)';
+    ? `perspective(700px) translateZ(10px) scale(1.03)${flipRot}`
+    : `perspective(700px)${flipRot}`;
 
   const boxShadow = hover && active
     ? `0 0 0 1px rgba(255,43,214,${proximity * 0.2}), 0 10px 30px rgba(0,0,0,0.55), 0 0 18px rgba(255,43,214,${proximity * 0.3}), 0 0 28px rgba(0,229,255,${proximity * 0.25})`
@@ -74,6 +74,7 @@ export default function TradingCard({ src, alt }) {
       onMouseMove={onMouseMove}
       onMouseEnter={handleMouseEnter}
       onMouseLeave={handleMouseLeave}
+      onClick={handleClick}
       style={{
         position: 'relative',
         width: 220,
@@ -82,14 +83,14 @@ export default function TradingCard({ src, alt }) {
         transformStyle: 'preserve-3d',
         willChange: 'transform',
         transform: cardTransform,
-        transition: 'transform 120ms ease-out, box-shadow 180ms ease-out',
+        transition: 'transform 500ms cubic-bezier(0.2, 0.8, 0.2, 1), box-shadow 180ms ease-out',
         boxShadow,
-        cursor: 'default',
-        overflow: 'hidden',
+        cursor: 'pointer',
         lineHeight: 0,
       }}
     >
-      {/* Outer double-border ring: fades in on hover */}
+      {/* Outer double-border ring: fades in on hover. Lives on both faces
+          visually because it's outside the card body. */}
       <AnimatePresence>
         {hover && (
           <motion.div
@@ -111,28 +112,96 @@ export default function TradingCard({ src, alt }) {
         )}
       </AnimatePresence>
 
-      <img
-        src={src}
-        alt={alt}
-        style={{ width: '100%', height: 'auto', display: 'block' }}
-      />
-
-      {/* Holographic sheen overlay — only visible on hover */}
+      {/* Front face — the photo */}
       <div
-        aria-hidden="true"
+        style={{
+          position: 'relative',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+        }}
+      >
+        <img
+          src={src}
+          alt={alt}
+          style={{ width: '100%', height: 'auto', display: 'block' }}
+        />
+        {/* Holographic sheen overlay (front only) */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(270deg, #ff2bd6, #00e5ff, #00ff88, #ff2bd6)',
+            backgroundSize: '300% 300%',
+            backgroundPosition: sheenBgPos,
+            mixBlendMode: 'overlay',
+            opacity: hover && active ? 0.18 : 0,
+            transition: 'opacity 150ms, background-position 80ms',
+            pointerEvents: 'none',
+          }}
+        />
+      </div>
+
+      {/* Back face — rainbow gradient with centered name */}
+      <div
+        aria-hidden={!flipped}
         style={{
           position: 'absolute',
           inset: 0,
-          background: 'linear-gradient(270deg, #ff2bd6, #00e5ff, #00ff88, #ff2bd6)',
-          backgroundSize: '300% 300%',
-          backgroundPosition: sheenBgPos,
-          mixBlendMode: 'overlay',
-          opacity: hover && active ? 0.18 : 0,
-          transition: 'opacity 150ms, background-position 80ms',
-          pointerEvents: 'none',
-          zIndex: 1,
+          transform: 'rotateY(180deg)',
+          backfaceVisibility: 'hidden',
+          WebkitBackfaceVisibility: 'hidden',
+          background: 'var(--bg)',
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          padding: 14,
+          overflow: 'hidden',
         }}
-      />
+      >
+        {/* Animated rainbow wash behind the text */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 0,
+            background: 'linear-gradient(270deg, #ff2bd6, #00e5ff, #00ff88, #ff2bd6)',
+            backgroundSize: '400% 100%',
+            animation: 'rainbow-sweep 6s linear infinite',
+            opacity: 0.35,
+            mixBlendMode: 'screen',
+          }}
+        />
+        {/* Rainbow hairline frame */}
+        <div
+          aria-hidden="true"
+          style={{
+            position: 'absolute',
+            inset: 6,
+            border: '1px solid rgba(255,255,255,0.22)',
+            pointerEvents: 'none',
+          }}
+        />
+        <div
+          style={{
+            position: 'relative',
+            textAlign: 'center',
+            fontFamily: 'var(--mono)',
+            color: 'var(--fg)',
+            lineHeight: 1.4,
+          }}
+        >
+          <div style={{ fontSize: '0.72rem', letterSpacing: '0.3em', color: 'var(--fg-dim)' }}>
+            {'// back'}
+          </div>
+          <div style={{ fontSize: '1rem', fontWeight: 700, letterSpacing: '0.05em', marginTop: 8 }}>
+            ERIC FEINSTEIN
+          </div>
+          <div style={{ fontSize: '0.7rem', color: 'var(--fg-dim)', marginTop: 6 }}>
+            made with claude · nyc
+          </div>
+        </div>
+      </div>
     </div>
   );
 }
