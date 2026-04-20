@@ -3,7 +3,16 @@ import GlitchText from './shell/GlitchText';
 import SectionHeader from './shell/SectionHeader';
 import TradingCard from './about/TradingCard';
 
-const ROLES = ['front-end engineer', 'guitarist', 'vibe-coder'];
+const ROLES = [
+  'front-end engineer',
+  'musician',
+  'react native dev',
+  'guitarist',
+  'songwriter',
+  'vibe-coder',
+  'producer',
+  'new yorker',
+];
 
 export default function About() {
   const [roleIdx, setRoleIdx] = useState(0);
