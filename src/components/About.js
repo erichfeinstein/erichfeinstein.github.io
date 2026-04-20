@@ -23,15 +23,8 @@ export default function About() {
   }, []);
 
   return (
-    <div
-      style={{
-        display: 'grid',
-        gridTemplateColumns: 'minmax(0, 1fr) auto',
-        gap: '2rem',
-        alignItems: 'start',
-      }}
-    >
-      <div>
+    <div className="about-grid">
+      <div className="about-text">
         <SectionHeader label="whoami">eric feinstein</SectionHeader>
 
         <div style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)', marginBottom: '0.5rem', color: 'var(--fg-dim)' }}>
@@ -54,9 +47,31 @@ export default function About() {
       </div>
 
       {/* Offset so the card's top aligns with 'eric feinstein', not '// whoami' */}
-      <div style={{ marginTop: '1.75rem' }}>
+      <div className="about-card">
         <TradingCard src="/me.jpg" alt="eric feinstein" />
       </div>
+
+      <style>{`
+        .about-grid {
+          display: grid;
+          grid-template-columns: minmax(0, 1fr) auto;
+          gap: 2rem;
+          align-items: start;
+        }
+        .about-card { margin-top: 1.75rem; }
+
+        @media (max-width: 700px) {
+          .about-grid {
+            grid-template-columns: 1fr;
+            gap: 1.25rem;
+          }
+          .about-card {
+            order: -1;
+            margin-top: 0;
+            justify-self: center;
+          }
+        }
+      `}</style>
     </div>
   );
 }
