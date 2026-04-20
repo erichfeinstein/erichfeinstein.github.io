@@ -331,9 +331,10 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
           isPinned,
         };
       }
-      return { r: baseR, fill: color, opacity: 0.2, labelOpacity: 0.1, labelScale: 1, isPinned: false };
+      return { r: baseR, fill: color, opacity: 0.2, labelOpacity: 0, labelScale: 1, isPinned: false };
     }
-    return { r: baseR, fill: color, opacity: 1, labelOpacity: 1, labelScale, isPinned };
+    // Rest state: labels hidden — only dots visible.
+    return { r: baseR, fill: color, opacity: 1, labelOpacity: 0, labelScale, isPinned };
   }
 
   function getEdgeOpacity(sourceId, targetId) {
@@ -367,6 +368,12 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
               <stop offset="75%" stopColor="#00e5ff" stopOpacity="0.35" />
               <stop offset="100%" stopColor="#00e5ff" stopOpacity="0" />
             </radialGradient>
+            <linearGradient id="pin-text" x1="0%" y1="0%" x2="100%" y2="0%">
+              <stop offset="0%" stopColor="#ff2bd6" />
+              <stop offset="33%" stopColor="#00e5ff" />
+              <stop offset="66%" stopColor="#00ff88" />
+              <stop offset="100%" stopColor="#ff2bd6" />
+            </linearGradient>
             <style>{`
               .skill-label { paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; transition: opacity 180ms ease-out; }
               .skill-node-group { transition: opacity 180ms ease-out; }
@@ -467,8 +474,8 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
                         fontSize={12 * labelScale}
                         fontFamily="var(--mono)"
                         textAnchor={leftHalf ? 'start' : 'end'}
-                        className={`skill-label${isPinned ? ' rainbow-text' : ''}`}
-                        fill={isPinned ? undefined : 'white'}
+                        className="skill-label"
+                        fill={isPinned ? 'url(#pin-text)' : 'white'}
                         style={{ pointerEvents: 'none', userSelect: 'none', fontWeight: isPinned ? 700 : 400 }}
                         opacity={labelOpacity}
                       >
