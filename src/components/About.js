@@ -23,34 +23,37 @@ export default function About() {
   }, []);
 
   return (
-    <div>
-      <SectionHeader label="whoami">eric feinstein</SectionHeader>
-
-      <div style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)', marginBottom: '0.5rem', color: 'var(--fg-dim)' }}>
-        i am a{' '}
-        <GlitchText duration={500} trigger={roleIdx} className="rainbow-text">
-          {ROLES[roleIdx]}
-        </GlitchText>
-      </div>
-
-      <div style={{ color: 'var(--fg-dim)', fontSize: '0.85rem', marginBottom: '2rem' }}>
-        BA, Computer Science · Case Western Reserve '18 &nbsp;·&nbsp; Fullstack Academy '19
-      </div>
-
-      <div style={{
+    <div
+      style={{
         display: 'grid',
         gridTemplateColumns: 'minmax(0, 1fr) auto',
         gap: '2rem',
         alignItems: 'start',
-      }}>
+      }}
+    >
+      <div>
+        <SectionHeader label="whoami">eric feinstein</SectionHeader>
+
+        <div style={{ fontSize: 'clamp(1.1rem, 2.2vw, 1.5rem)', marginBottom: '0.5rem', color: 'var(--fg-dim)' }}>
+          i am a{' '}
+          <GlitchText duration={500} trigger={roleIdx} className="rainbow-text">
+            {ROLES[roleIdx]}
+          </GlitchText>
+        </div>
+
+        <div style={{ color: 'var(--fg-dim)', fontSize: '0.85rem', marginBottom: '2rem' }}>
+          BA, Computer Science · Case Western Reserve '18 &nbsp;·&nbsp; Fullstack Academy '19
+        </div>
+
         <p style={{ fontSize: '1.1rem', lineHeight: 1.7 }}>
           With over 7 years of experience, I am a front-end software engineer with a strong
           foundation in computer science and extensive knowledge of modern TypeScript and React.
           I thrive on collaborating with designers, product owners, and fellow engineers to
           create outstanding user experiences.
         </p>
-        <TradingCard src="/me.jpg" alt="eric feinstein" />
       </div>
+
+      <TradingCard src="/me.jpg" alt="eric feinstein" />
     </div>
   );
 }
