@@ -98,13 +98,17 @@ export default function TradingCard({ src, alt }) {
     ? Math.max(0, Math.min(1, 1 - 2 * Math.max(Math.abs(nx), Math.abs(ny))))
     : 0;
 
+  // Balatro-style: aggressive 3D tilt + slight lift + scale pop while hovering.
   const cardTransform = active
-    ? `perspective(1000px) rotateX(${-ny * 8}deg) rotateY(${nx * 8}deg) rotate(-1.5deg)`
+    ? `perspective(700px) translateZ(18px) rotateX(${-ny * 22}deg) rotateY(${nx * 22}deg) rotate(-1.5deg) scale(1.05)`
+    : hover
+    ? 'perspective(700px) translateZ(10px) rotate(-1.5deg) scale(1.03)'
     : 'rotate(-1.5deg)';
 
-  // Edge glow halved in strength compared to original
   const boxShadow = hover && active
-    ? `0 0 0 1px rgba(255,43,214,${proximity * 0.15}), 0 0 12px rgba(255,43,214,${proximity * 0.25}), 0 0 20px rgba(0,229,255,${proximity * 0.2})`
+    ? `0 0 0 1px rgba(255,43,214,${proximity * 0.2}), 0 10px 30px rgba(0,0,0,0.55), 0 0 18px rgba(255,43,214,${proximity * 0.3}), 0 0 28px rgba(0,229,255,${proximity * 0.25})`
+    : hover
+    ? '0 8px 24px rgba(0,0,0,0.45)'
     : 'none';
 
   const sheenBgPos = `${(nx + 0.5) * 100}% ${(ny + 0.5) * 100}%`;
@@ -123,7 +127,7 @@ export default function TradingCard({ src, alt }) {
         transformStyle: 'preserve-3d',
         willChange: 'transform',
         transform: cardTransform,
-        transition: 'transform 150ms ease-out, box-shadow 150ms',
+        transition: 'transform 120ms ease-out, box-shadow 180ms ease-out',
         boxShadow,
         cursor: 'default',
         overflow: 'hidden',
