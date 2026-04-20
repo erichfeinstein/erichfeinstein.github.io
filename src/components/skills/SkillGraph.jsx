@@ -64,7 +64,9 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
   const simRef = useRef(null);
   // Track which node was pinned via external focusedId prop (vs user click)
   const focusPinnedRef = useRef(null);
-  const [size, setSize] = useState({ w: 800, h: 600 });
+  const [size, setSize] = useState({ w: 800, h: 620 });
+  // Tick callback closes over the initial size; this ref lets it see current size.
+  const sizeRef = useRef({ w: 800, h: 620 });
   const [positions, setPositions] = useState(() =>
     Object.fromEntries(initialNodes.map((n) => [n.id, { x: 400, y: 300 }]))
   );
@@ -105,10 +107,12 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
       .alphaTarget(0);
 
     sim.on('tick', () => {
-      // Clamp nodes to container bounds
+      // Read current size from ref so the clamp follows resizes.
+      const cw = sizeRef.current.w;
+      const ch = sizeRef.current.h;
       nodes.forEach((n) => {
-        n.x = Math.max(pad, Math.min(w - pad, n.x));
-        n.y = Math.max(pad, Math.min(h - pad, n.y));
+        n.x = Math.max(pad, Math.min(cw - pad, n.x));
+        n.y = Math.max(pad, Math.min(ch - pad, n.y));
       });
       const pos = {};
       nodes.forEach((n) => {
@@ -127,6 +131,7 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
 
   // Update center + cluster forces when size changes
   useEffect(() => {
+    sizeRef.current = size;
     if (!simRef.current) return;
     const { sim } = simRef.current;
     const w = size.w;
@@ -135,16 +140,18 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
     sim.force('center', forceCenter(w / 2, h / 2));
     sim.force('clusterX', forceX((d) => anchors[d.cat]?.x ?? w / 2).strength(0.18));
     sim.force('clusterY', forceY((d) => anchors[d.cat]?.y ?? h / 2).strength(0.18));
-    sim.alpha(0.3).restart();
+    sim.alpha(0.4).restart();
   }, [size]);
 
-  // ResizeObserver
+  // ResizeObserver — track actual container width/height every time it changes.
   useEffect(() => {
     const el = containerRef.current;
     if (!el) return;
     const ro = new ResizeObserver((entries) => {
-      const { width } = entries[0].contentRect;
-      setSize({ w: width, h: 600 });
+      const { width, height } = entries[0].contentRect;
+      if (width > 0 && height > 0) {
+        setSize({ w: width, h: height });
+      }
     });
     ro.observe(el);
     return () => ro.disconnect();
