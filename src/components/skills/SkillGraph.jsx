@@ -99,6 +99,13 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
   );
   const [hoveredId, setHoveredId] = useState(null);
   const [pinnedIds, setPinnedIds] = useState(new Set());
+  // Mirror pinned set in a ref so the collide force (closed over at setup) can read it live.
+  const pinnedIdsRef = useRef(pinnedIds);
+  useEffect(() => {
+    pinnedIdsRef.current = pinnedIds;
+    // Re-heat so the collide force re-evaluates with new pinned-radius boosts.
+    simRef.current?.sim.alpha(0.25).restart();
+  }, [pinnedIds]);
 
   // Build adjacency set for hover highlight
   const adjacency = useRef(new Map());
@@ -127,7 +134,11 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
       .force('charge', forceManyBody().strength(-140))
       .force('link', forceLink(edges).id((d) => d.id).distance(70).strength(0.5))
       .force('center', forceCenter(w / 2, h / 2))
-      .force('collide', forceCollide((d) => Math.max(30, d.label.length * 3.2)))
+      .force('collide', forceCollide((d) => {
+        const base = Math.max(30, d.label.length * 3.2);
+        // Pinned nodes actively shove themselves apart so multi-pin doesn't overlap.
+        return pinnedIdsRef.current.has(d.id) ? base * 1.7 : base;
+      }))
       .force('clusterX', forceX((d) => anchors[d.cat]?.x ?? w / 2).strength(0.18))
       .force('clusterY', forceY((d) => anchors[d.cat]?.y ?? h / 2).strength(0.18))
       .force('cursor', makeCursorForce(() => mousePosRef.current, { radius: 180, strength: 0.05 }))
