@@ -59,6 +59,29 @@ function getCategoryAnchors(width, height) {
   return anchors;
 }
 
+// Custom d3 force: pull nodes gently toward the cursor, with distance falloff.
+function makeCursorForce(getPos, { radius = 180, strength = 0.08 } = {}) {
+  let _nodes;
+  function force(alpha) {
+    const pos = getPos();
+    if (!pos) return;
+    const { x: px, y: py } = pos;
+    for (const n of _nodes) {
+      if (n.fx != null || n.fy != null) continue; // skip pinned
+      const dx = px - n.x;
+      const dy = py - n.y;
+      const d = Math.sqrt(dx * dx + dy * dy);
+      if (d > 0 && d < radius) {
+        const k = (1 - d / radius) * strength * alpha;
+        n.vx += dx * k;
+        n.vy += dy * k;
+      }
+    }
+  }
+  force.initialize = (n) => { _nodes = n; };
+  return force;
+}
+
 export default function SkillGraph({ focusedId, onUnfocus }) {
   const containerRef = useRef(null);
   const simRef = useRef(null);
@@ -103,6 +126,7 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
       .force('collide', forceCollide(32))
       .force('clusterX', forceX((d) => anchors[d.cat]?.x ?? w / 2).strength(0.18))
       .force('clusterY', forceY((d) => anchors[d.cat]?.y ?? h / 2).strength(0.18))
+      .force('cursor', makeCursorForce(() => mousePosRef.current))
       .alphaDecay(0.05)
       .alphaTarget(0);
 
@@ -193,12 +217,26 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
     }
   }, [focusedId, size.w, size.h]);
 
-  // No idle drift — simulation only runs when nudged by an explicit action
-  // (focus change, pin/unpin, background click, resize).
-  const handleMouseEnter = useCallback(() => {}, []);
+  // Cursor position (SVG-local coords). Null when outside the graph container.
+  const mousePosRef = useRef(null);
+
+  const handleMouseEnter = useCallback(() => {
+    // Gentle drift while cursor is over the graph so cursor-gravity can move nodes.
+    simRef.current?.sim.alphaTarget(0.04).restart();
+  }, []);
   const handleMouseLeave = useCallback(() => {
+    mousePosRef.current = null;
+    simRef.current?.sim.alphaTarget(0);
     if (!focusedId) setHoveredId(null);
   }, [focusedId]);
+  const handleContainerMouseMove = useCallback((e) => {
+    const rect = containerRef.current?.getBoundingClientRect();
+    if (!rect) return;
+    mousePosRef.current = {
+      x: e.clientX - rect.left,
+      y: e.clientY - rect.top,
+    };
+  }, []);
 
   // Click on SVG background: unfocus
   const handleSvgClick = useCallback((e) => {
@@ -271,9 +309,9 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
       const isActive = id === activeId;
       const isNeighbor = neighbors.has(id);
       if (isActive || isNeighbor) {
-        return { r: Math.max(baseR, 5), fill: '#ffffff', opacity: 1, labelOpacity: 1, labelScale };
+        return { r: baseR, fill: '#ffffff', opacity: 1, labelOpacity: 1, labelScale };
       }
-      return { r: baseR, fill: color, opacity: 0.2, labelOpacity: 0, labelScale: 1 };
+      return { r: baseR, fill: color, opacity: 0.25, labelOpacity: 0.15, labelScale: 1 };
     }
     return { r: baseR, fill: color, opacity: 1, labelOpacity: 1, labelScale };
   }
@@ -299,6 +337,7 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
         style={{ position: 'relative', width: '100%', height: '620px', cursor: 'default' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
+        onMouseMove={handleContainerMouseMove}
       >
         <svg
           width={size.w}
@@ -306,9 +345,14 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
           style={{ display: 'block' }}
           onClick={handleSvgClick}
         >
-          {/* Label halo for readability over edges/other labels */}
+          {/* Label halo + hover-smoothing transitions */}
           <defs>
-            <style>{`.skill-label { paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; }`}</style>
+            <style>{`
+              .skill-label { paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; transition: opacity 180ms ease-out; }
+              .skill-node-group { transition: opacity 180ms ease-out; }
+              .skill-node-dot { transition: fill 180ms ease-out; }
+              .skill-edge { transition: opacity 180ms ease-out; }
+            `}</style>
           </defs>
           {/* Invisible background to capture clicks */}
           <rect
@@ -328,6 +372,7 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
               return (
                 <line
                   key={i}
+                  className="skill-edge"
                   x1={sp.x}
                   y1={sp.y}
                   x2={tp.x}
@@ -349,6 +394,7 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
               return (
                 <g
                   key={node.id}
+                  className="skill-node-group"
                   transform={`translate(${pos.x},${pos.y})`}
                   style={{ cursor: 'pointer' }}
                   onMouseEnter={() => setHoveredId(node.id)}
@@ -375,6 +421,7 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
                   )}
                   {/* Visible dot */}
                   <circle
+                    className="skill-node-dot"
                     r={r}
                     fill={fill}
                     style={{ pointerEvents: 'none' }}
