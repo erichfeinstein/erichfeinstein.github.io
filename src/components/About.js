@@ -53,7 +53,10 @@ export default function About() {
         </p>
       </div>
 
-      <TradingCard src="/me.jpg" alt="eric feinstein" />
+      {/* Offset so the card's top aligns with 'eric feinstein', not '// whoami' */}
+      <div style={{ marginTop: '1.75rem' }}>
+        <TradingCard src="/me.jpg" alt="eric feinstein" />
+      </div>
     </div>
   );
 }
