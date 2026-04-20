@@ -36,13 +36,11 @@ export const NODES = [
   ['css-modules', 'CSS Modules', 'style'],
   ['flexbox', 'Flexbox', 'style'],
   ['grid', 'Grid', 'style'],
-  ['responsive', 'Responsive Design', 'style'],
 
   ['react', 'React', 'react'],
   ['react-native', 'React Native', 'react'],
   ['nextjs', 'Next.js', 'react'],
   ['redux', 'Redux', 'react'],
-  ['redux-toolkit', 'Redux Toolkit', 'react'],
   ['react-query', 'React Query', 'react'],
   ['zustand', 'Zustand', 'react'],
   ['react-hook-form', 'React Hook Form', 'react'],
@@ -97,12 +95,9 @@ export const NODES = [
   ['cloud-storage', 'Cloud Storage', 'cloud'],
   ['secret-manager', 'Secret Manager', 'cloud'],
   ['artifact-registry', 'Artifact Registry', 'cloud'],
-  ['wif', 'Workload Identity Federation', 'cloud'],
-  ['iam', 'IAM', 'cloud'],
   ['cloudflare', 'Cloudflare', 'cloud'],
   ['cf-pages', 'Cloudflare Pages', 'cloud'],
   ['cf-workers', 'Cloudflare Workers', 'cloud'],
-  ['cf-dns', 'Cloudflare DNS', 'cloud'],
   ['neon', 'Neon', 'cloud'],
   ['railway', 'Railway', 'cloud'],
 
@@ -127,7 +122,6 @@ export const NODES = [
   ['cursor', 'Cursor', 'ai'],
   ['copilot', 'GitHub Copilot', 'ai'],
   ['gemini-api', 'Gemini API', 'ai'],
-  ['openai-api', 'OpenAI API', 'ai'],
   ['aidlc', 'AIDLC', 'ai'],
 
   ['devcycle', 'DevCycle', 'exp'],
@@ -135,7 +129,6 @@ export const NODES = [
 
   ['agile', 'Agile/Scrum', 'prac'],
   ['tdd', 'TDD', 'prac'],
-  ['code-review', 'Code Review', 'prac'],
   ['a11y', 'Accessibility (WCAG/ARIA)', 'prac'],
   ['ab-testing', 'A/B Testing', 'prac'],
   ['feature-flags', 'Feature Flags', 'prac'],
@@ -152,14 +145,14 @@ export const NODES = [
 export const EDGES = [
   // React ecosystem internal
   ['react', 'typescript'], ['react', 'javascript'], ['react', 'nextjs'], ['react', 'react-native'],
-  ['react', 'redux'], ['redux', 'redux-toolkit'], ['react', 'react-query'], ['react', 'zustand'],
+  ['react', 'redux'], ['react', 'react-query'], ['react', 'zustand'],
   ['react', 'react-hook-form'], ['react', 'react-router'], ['react', 'mui'], ['react', 'rtl'],
   ['react', 'jest'], ['react', 'cypress'], ['react', 'playwright'], ['react', 'storybook'],
 
   // Styling
   ['css', 'html'], ['css', 'sass'], ['css', 'tailwind'], ['css', 'styled-components'],
   ['css', 'emotion'], ['css', 'css-modules'], ['css', 'flexbox'], ['css', 'grid'],
-  ['css', 'responsive'], ['styled-components', 'emotion'],
+  ['styled-components', 'emotion'],
 
   // Backend
   ['python', 'fastapi'], ['fastapi', 'sqlalchemy'], ['fastapi', 'pydantic'], ['fastapi', 'alembic'],
@@ -185,10 +178,9 @@ export const EDGES = [
 
   // Cloud: GCP cluster
   ['gcp', 'cloud-run'], ['gcp', 'cloud-storage'], ['gcp', 'secret-manager'],
-  ['gcp', 'artifact-registry'], ['gcp', 'wif'], ['gcp', 'iam'],
-  ['wif', 'gh-actions'], ['iam', 'wif'],
+  ['gcp', 'artifact-registry'],
   // Cloudflare cluster
-  ['cloudflare', 'cf-pages'], ['cloudflare', 'cf-workers'], ['cloudflare', 'cf-dns'],
+  ['cloudflare', 'cf-pages'], ['cloudflare', 'cf-workers'],
   // Hosted DBs
   ['neon', 'postgres'], ['railway', 'postgres'],
 
@@ -207,7 +199,7 @@ export const EDGES = [
 
   // AI
   ['claude-api', 'claude-code'], ['claude-code', 'aidlc'], ['cursor', 'aidlc'],
-  ['copilot', 'aidlc'], ['gemini-api', 'claude-api'], ['openai-api', 'claude-api'],
+  ['copilot', 'aidlc'], ['gemini-api', 'claude-api'],
 
   // Experimentation
   ['devcycle', 'feature-flags'], ['devcycle', 'ab-testing'],
@@ -215,7 +207,7 @@ export const EDGES = [
 
   // Practices cross-connections
   ['tdd', 'jest'], ['tdd', 'pytest'], ['tdd', 'rtl'],
-  ['code-review', 'github'], ['a11y', 'html'], ['a11y', 'css'],
+  ['a11y', 'html'], ['a11y', 'css'],
   ['cicd', 'gh-actions'], ['cicd', 'docker'],
   ['security', 'jwt'], ['security', 'signed-urls'], ['security', 'rate-limiting'],
   ['git-hooks', 'git'], ['monorepos', 'github'],
@@ -227,7 +219,7 @@ export const EDGES = [
   ['websockets', 'rest'],        // API transport siblings
   ['aws', 'gcp'],                // cloud siblings
   ['sendgrid', 'fastapi'],       // email via backend
-  ['agile', 'code-review'],      // practice neighbors
+  ['agile', 'github'],           // practice neighbor
   ['i18n', 'react'],             // i18n is typically a React concern
   ['seo', 'html'],               // SEO relies on HTML
 ];
