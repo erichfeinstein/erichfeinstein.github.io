@@ -54,7 +54,7 @@ export default function BlogPost() {
   const minutes = getReadingTimeMinutes(post.content);
 
   return (
-    <article style={{ maxWidth: 'var(--max-prose)' }}>
+    <article style={{ maxWidth: 'var(--max-prose)', margin: '0 auto' }}>
       <SectionHeader label={`blog / ${post.slug}`}>{post.title}</SectionHeader>
       <div style={{ color: 'var(--fg-dim)', fontSize: '0.85rem', marginBottom: '2rem' }}>
         {post.date} · {minutes} min read · {post.tags.map((t) => `#${t}`).join(' · ')}
