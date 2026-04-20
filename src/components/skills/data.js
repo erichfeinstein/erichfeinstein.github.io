@@ -41,11 +41,7 @@ export const NODES = [
   ['react-native', 'React Native', 'react'],
   ['nextjs', 'Next.js', 'react'],
   ['redux', 'Redux', 'react'],
-  ['react-query', 'React Query', 'react'],
   ['zustand', 'Zustand', 'react'],
-  ['react-hook-form', 'React Hook Form', 'react'],
-  ['react-router', 'React Router', 'react'],
-  ['mui', 'MUI', 'react'],
 
   ['node', 'Node.js', 'backend'],
   ['express', 'Express', 'backend'],
@@ -132,7 +128,6 @@ export const NODES = [
   ['a11y', 'Accessibility (WCAG/ARIA)', 'prac'],
   ['ab-testing', 'A/B Testing', 'prac'],
   ['feature-flags', 'Feature Flags', 'prac'],
-  ['i18n', 'i18n', 'prac'],
   ['seo', 'SEO', 'prac'],
   ['security', 'Security Review', 'prac'],
   ['rate-limiting', 'Rate Limiting', 'prac'],
@@ -145,9 +140,10 @@ export const NODES = [
 export const EDGES = [
   // React ecosystem internal
   ['react', 'typescript'], ['react', 'javascript'], ['react', 'nextjs'], ['react', 'react-native'],
-  ['react', 'redux'], ['react', 'react-query'], ['react', 'zustand'],
-  ['react', 'react-hook-form'], ['react', 'react-router'], ['react', 'mui'], ['react', 'rtl'],
-  ['react', 'jest'], ['react', 'cypress'], ['react', 'playwright'], ['react', 'storybook'],
+  ['react', 'redux'], ['react', 'zustand'],
+  ['react', 'rtl'], ['react', 'jest'], ['react', 'cypress'], ['react', 'playwright'],
+  ['react', 'storybook'],
+  ['typescript', 'javascript'],
 
   // Styling
   ['css', 'html'], ['css', 'sass'], ['css', 'tailwind'], ['css', 'styled-components'],
@@ -161,7 +157,7 @@ export const EDGES = [
   ['python', 'pytest'], ['python', 'ruff'],
 
   // API / Protocols
-  ['rest', 'express'], ['rest', 'fastapi'], ['graphql', 'react-query'],
+  ['rest', 'express'], ['rest', 'fastapi'], ['graphql', 'fastapi'],
   ['jwt', 'fastapi'], ['jwt', 'oauth'], ['webhooks', 'stripe'], ['signed-urls', 'cloud-storage'],
   ['grpc', 'protobuf'],
 
@@ -220,6 +216,5 @@ export const EDGES = [
   ['aws', 'gcp'],                // cloud siblings
   ['sendgrid', 'fastapi'],       // email via backend
   ['agile', 'github'],           // practice neighbor
-  ['i18n', 'react'],             // i18n is typically a React concern
   ['seo', 'html'],               // SEO relies on HTML
 ];
