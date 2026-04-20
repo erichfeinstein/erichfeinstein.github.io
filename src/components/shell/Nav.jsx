@@ -14,7 +14,7 @@ const isActive = (pathname, path) => {
   return pathname === path || pathname.startsWith(path + '/');
 };
 
-export default function Nav({ onOpenPalette }) {
+export default function Nav() {
   const { pathname } = useLocation();
   return (
     <header
@@ -36,6 +36,7 @@ export default function Nav({ onOpenPalette }) {
           gap: 14,
           overflowX: 'auto',
           scrollbarWidth: 'none',
+          flex: 1,
         }}
       >
         {SECTIONS.map((s) => {
@@ -61,24 +62,6 @@ export default function Nav({ onOpenPalette }) {
           );
         })}
       </nav>
-      <div style={{ flex: 1 }} />
-      <button
-        onClick={onOpenPalette}
-        aria-label="Open command palette"
-        style={{
-          background: 'transparent',
-          color: 'var(--fg-dim)',
-          border: '1px solid var(--fg-faint)',
-          borderRadius: 6,
-          padding: '4px 10px',
-          fontFamily: 'inherit',
-          fontSize: '0.85rem',
-          cursor: 'pointer',
-          whiteSpace: 'nowrap',
-        }}
-      >
-        press <kbd style={{ padding: '0 4px', border: '1px solid var(--fg-faint)', borderRadius: 3 }}>/</kbd>
-      </button>
     </header>
   );
 }
