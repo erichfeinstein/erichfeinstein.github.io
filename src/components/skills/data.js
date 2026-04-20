@@ -40,6 +40,7 @@ export const NODES = [
   ['react', 'React', 'react'],
   ['react-native', 'React Native', 'react'],
   ['nextjs', 'Next.js', 'react'],
+  ['ssr', 'SSR', 'react'],
   ['redux', 'Redux', 'react'],
   ['zustand', 'Zustand', 'react'],
 
@@ -57,6 +58,8 @@ export const NODES = [
   ['playwright', 'Playwright', 'test'],
   ['pytest', 'pytest', 'test'],
 
+  ['http', 'HTTP', 'api'],
+  ['json', 'JSON', 'api'],
   ['rest', 'REST', 'api'],
   ['graphql', 'GraphQL', 'api'],
   ['grpc', 'gRPC', 'api'],
@@ -94,6 +97,7 @@ export const NODES = [
   ['cloudflare', 'Cloudflare', 'cloud'],
   ['cf-pages', 'Cloudflare Pages', 'cloud'],
   ['cf-workers', 'Cloudflare Workers', 'cloud'],
+  ['dns', 'DNS', 'cloud'],
   ['neon', 'Neon', 'cloud'],
   ['railway', 'Railway', 'cloud'],
 
@@ -134,6 +138,7 @@ export const NODES = [
   ['cicd', 'CI/CD', 'prac'],
   ['monorepos', 'Monorepos', 'prac'],
   ['git-hooks', 'Git Hooks', 'prac'],
+  ['system-design', 'System Design', 'prac'],
 ];
 
 // Pairs of related node ids. Undirected edges; each pair listed once.
@@ -144,6 +149,7 @@ export const EDGES = [
   ['react', 'rtl'], ['react', 'jest'], ['react', 'cypress'], ['react', 'playwright'],
   ['react', 'storybook'],
   ['typescript', 'javascript'],
+  ['ssr', 'nextjs'], ['ssr', 'react'],
 
   // Styling
   ['css', 'html'], ['css', 'sass'], ['css', 'tailwind'], ['css', 'styled-components'],
@@ -160,6 +166,8 @@ export const EDGES = [
   ['rest', 'express'], ['rest', 'fastapi'], ['graphql', 'fastapi'],
   ['jwt', 'fastapi'], ['jwt', 'oauth'], ['webhooks', 'stripe'], ['signed-urls', 'cloud-storage'],
   ['grpc', 'protobuf'],
+  ['http', 'rest'], ['http', 'webhooks'], ['http', 'signed-urls'], ['http', 'json'],
+  ['json', 'rest'], ['json', 'javascript'],
 
   // Audio/media
   ['howler', 'web-audio'], ['howler', 'media-session'], ['howler', 'javascript'],
@@ -176,7 +184,7 @@ export const EDGES = [
   ['gcp', 'cloud-run'], ['gcp', 'cloud-storage'], ['gcp', 'secret-manager'],
   ['gcp', 'artifact-registry'],
   // Cloudflare cluster
-  ['cloudflare', 'cf-pages'], ['cloudflare', 'cf-workers'],
+  ['cloudflare', 'cf-pages'], ['cloudflare', 'cf-workers'], ['cloudflare', 'dns'],
   // Hosted DBs
   ['neon', 'postgres'], ['railway', 'postgres'],
 
@@ -207,6 +215,7 @@ export const EDGES = [
   ['cicd', 'gh-actions'], ['cicd', 'docker'],
   ['security', 'jwt'], ['security', 'signed-urls'], ['security', 'rate-limiting'],
   ['git-hooks', 'git'], ['monorepos', 'github'],
+  ['system-design', 'cicd'], ['system-design', 'monorepos'], ['system-design', 'http'],
 
   // Orphan anchors
   ['java', 'javascript'],        // lang neighbors
