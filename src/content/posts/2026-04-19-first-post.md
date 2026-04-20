@@ -15,8 +15,8 @@ conversation with Claude.
 - a one-shot glitch-scramble intro that plays the first time you land
 - a force-directed skill graph where nodes lean toward your mouse and hub skills read brighter
 - a 3D-tilting holographic photo card (balatro-adjacent)
-- a `/` command palette for keyboard people, visible nav for everyone else
-- this blog, markdown files in `src/content/posts/`, loaded at build time
+- a `/` command palette and a clickable nav
+- a markdown-backed blog rendered at build time
 
 ## how it went
 
@@ -25,8 +25,7 @@ direction.
 
 What followed was a long back-and-forth of multiple-choice questions —
 aesthetic direction, font, accent, nav pattern, post format, card
-anatomy, stat strips, whether to keep the confetti easter egg
-(we didn't).
+anatomy.
 
 Most of the good calls were course-corrections mid-build, not upfront
 spec. The iteration was the thing.
