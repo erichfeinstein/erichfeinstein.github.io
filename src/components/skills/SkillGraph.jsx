@@ -47,7 +47,7 @@ const CAT_KEYS = Object.keys(CATEGORIES); // 17 categories
 const GRID_COLS = 5;
 
 function getCategoryAnchors(width, height) {
-  const pad = 60;
+  const pad = 100;
   const innerW = width - pad * 2;
   const innerH = height - pad * 2;
   const numRows = Math.ceil(CAT_KEYS.length / GRID_COLS);
@@ -80,6 +80,26 @@ function makeCursorForce(getPos, { radius = 180, strength = 0.08 } = {}) {
         n.vx += dx * k;
         n.vy += dy * k;
       }
+    }
+  }
+  force.initialize = (n) => { _nodes = n; };
+  return force;
+}
+
+// Soft boundary: linearly ramp up a push-inward force as a node approaches
+// the edge. Runs BEFORE the hard clamp each tick, so collision has room to
+// separate crowded nodes along the edge instead of them all piling at the
+// clamp line.
+function makeBoundaryForce(getSize, { pad = 80, strength = 0.18 } = {}) {
+  let _nodes;
+  function force(alpha) {
+    const { w, h } = getSize();
+    for (const n of _nodes) {
+      if (n.fx != null || n.fy != null) continue;
+      if (n.x < pad) n.vx += (pad - n.x) * strength * alpha;
+      else if (n.x > w - pad) n.vx -= (n.x - (w - pad)) * strength * alpha;
+      if (n.y < pad) n.vy += (pad - n.y) * strength * alpha;
+      else if (n.y > h - pad) n.vy -= (n.y - (h - pad)) * strength * alpha;
     }
   }
   force.initialize = (n) => { _nodes = n; };
@@ -142,6 +162,7 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
       .force('clusterX', forceX((d) => anchors[d.cat]?.x ?? w / 2).strength(0.18))
       .force('clusterY', forceY((d) => anchors[d.cat]?.y ?? h / 2).strength(0.18))
       .force('cursor', makeCursorForce(() => mousePosRef.current, { radius: 180, strength: 0.05 }))
+      .force('boundary', makeBoundaryForce(() => sizeRef.current, { pad: 80, strength: 0.22 }))
       .alphaDecay(0.05)
       .alphaTarget(0);
 
