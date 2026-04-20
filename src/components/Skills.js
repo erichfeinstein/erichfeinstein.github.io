@@ -2,30 +2,38 @@ import React, { useState } from 'react';
 import SectionHeader from './shell/SectionHeader';
 import SkillGraph from './skills/SkillGraph';
 import SkillList from './skills/SkillList';
+import { useIsMobile } from '../hooks/useIsMobile';
 
 export default function Skills() {
   const [focusedId, setFocusedId] = useState(null);
+  const isMobile = useIsMobile();
 
-  return (
-    <div
-      style={{
+  const containerStyle = isMobile
+    ? { width: '100%' }
+    : {
         width: 'min(1400px, calc(100vw - 48px))',
         position: 'relative',
         left: '50%',
         transform: 'translateX(-50%)',
-      }}
-    >
+      };
+
+  return (
+    <div style={containerStyle}>
       <SectionHeader label="skills">things i use</SectionHeader>
       <p style={{ color: 'var(--fg-dim)', marginBottom: '1rem', maxWidth: 'var(--max-prose)' }}>
-        hover a node to see connections. click to pin, or pick from the list.
+        {isMobile
+          ? 'tap a category below.'
+          : 'hover a node to see connections. click to pin, or pick from the list.'}
       </p>
       <div className="skills-layout">
-        <div className="skills-graph-col">
-          <SkillGraph
-            focusedId={focusedId}
-            onUnfocus={() => setFocusedId(null)}
-          />
-        </div>
+        {!isMobile && (
+          <div className="skills-graph-col">
+            <SkillGraph
+              focusedId={focusedId}
+              onUnfocus={() => setFocusedId(null)}
+            />
+          </div>
+        )}
         <div className="skills-list-panel">
           <SkillList onSelect={setFocusedId} focusedId={focusedId} />
         </div>
@@ -55,6 +63,14 @@ export default function Skills() {
             margin-top: 1.5rem;
             border-top: 1px solid var(--fg-faint);
             padding-top: 1rem;
+          }
+        }
+
+        @media (max-width: 700px) {
+          .skills-list-panel {
+            margin-top: 0;
+            border-top: none;
+            padding-top: 0;
           }
         }
       `}</style>
