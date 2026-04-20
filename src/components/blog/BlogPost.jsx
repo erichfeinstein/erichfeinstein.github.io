@@ -23,9 +23,12 @@ const mdComponents = {
   img: ({ src, alt }) => (
     <img src={src} alt={alt} style={{ width: '100%', border: '1px solid var(--fg-faint)', borderRadius: 4, margin: '1rem 0' }} />
   ),
-  code({ inline, className, children }) {
+  code({ className, children }) {
     const match = /language-(\w+)/.exec(className || '');
-    if (inline) {
+    const text = String(children).replace(/\n$/, '');
+    // react-markdown v10 dropped the `inline` prop; detect inline ourselves:
+    // inline code has no language class and fits on one line.
+    if (!match && !text.includes('\n')) {
       return (
         <code style={{ background: 'var(--fg-faint)', padding: '0 4px', borderRadius: 3 }}>
           {children}
@@ -34,10 +37,13 @@ const mdComponents = {
     }
     return (
       <SyntaxHighlighter language={match ? match[1] : 'text'} style={vscDarkPlus} PreTag="div">
-        {String(children).replace(/\n$/, '')}
+        {text}
       </SyntaxHighlighter>
     );
   },
+  // react-markdown v10 wraps code fences in a <pre>; since SyntaxHighlighter
+  // renders its own <pre>, override <pre> to not double-wrap.
+  pre: ({ children }) => <>{children}</>,
 };
 
 export default function BlogPost() {
