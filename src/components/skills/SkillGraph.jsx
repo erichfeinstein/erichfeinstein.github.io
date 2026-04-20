@@ -70,7 +70,6 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
   );
   const [hoveredId, setHoveredId] = useState(null);
   const [pinnedIds, setPinnedIds] = useState(new Set());
-  const [search, setSearch] = useState('');
 
   // Build adjacency set for hover highlight
   const adjacency = useRef(new Map());
@@ -96,13 +95,13 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
     const anchors = getCategoryAnchors(w, h);
 
     const sim = forceSimulation(nodes)
-      .force('charge', forceManyBody().strength(-120))
-      .force('link', forceLink(edges).id((d) => d.id).distance(80).strength(0.4))
+      .force('charge', forceManyBody().strength(-140))
+      .force('link', forceLink(edges).id((d) => d.id).distance(70).strength(0.5))
       .force('center', forceCenter(w / 2, h / 2))
-      .force('collide', forceCollide(22))
-      .force('clusterX', forceX((d) => anchors[d.cat]?.x ?? w / 2).strength(0.08))
-      .force('clusterY', forceY((d) => anchors[d.cat]?.y ?? h / 2).strength(0.08))
-      .alphaDecay(0.04)
+      .force('collide', forceCollide(32))
+      .force('clusterX', forceX((d) => anchors[d.cat]?.x ?? w / 2).strength(0.18))
+      .force('clusterY', forceY((d) => anchors[d.cat]?.y ?? h / 2).strength(0.18))
+      .alphaDecay(0.05)
       .alphaTarget(0);
 
     sim.on('tick', () => {
@@ -134,8 +133,8 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
     const h = size.h;
     const anchors = getCategoryAnchors(w, h);
     sim.force('center', forceCenter(w / 2, h / 2));
-    sim.force('clusterX', forceX((d) => anchors[d.cat]?.x ?? w / 2).strength(0.08));
-    sim.force('clusterY', forceY((d) => anchors[d.cat]?.y ?? h / 2).strength(0.08));
+    sim.force('clusterX', forceX((d) => anchors[d.cat]?.x ?? w / 2).strength(0.18));
+    sim.force('clusterY', forceY((d) => anchors[d.cat]?.y ?? h / 2).strength(0.18));
     sim.alpha(0.3).restart();
   }, [size]);
 
@@ -249,15 +248,8 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
     sim.alpha(0.1).restart();
   }, [onUnfocus]);
 
-  // Search matching
-  const searchTerm = search.trim().toLowerCase();
-  const matchedIds = searchTerm
-    ? new Set(initialNodes.filter((n) => n.label.toLowerCase().includes(searchTerm)).map((n) => n.id))
-    : null;
-  const noResults = searchTerm.length > 0 && matchedIds && matchedIds.size === 0;
-
   // Active highlight id: focusedId takes priority over hover for highlight
-  const activeId = hoveredId || (focusedId && !matchedIds ? focusedId : null);
+  const activeId = hoveredId || focusedId || null;
 
   // Derive per-node visual properties
   function getNodeProps(id) {
@@ -267,15 +259,6 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
     const isPinned = pinnedIds.has(id);
     const labelScale = isPinned ? 1.05 : 1;
 
-    if (matchedIds) {
-      // Search mode: focus still wins if it matches
-      const matched = matchedIds.has(id);
-      const isFocused = focusedId === id;
-      if (isFocused || matched) {
-        return { r: Math.max(baseR, 7), fill: '#ffffff', opacity: 1, labelOpacity: 1, labelScale };
-      }
-      return { r: baseR, fill: color, opacity: 0.15, labelOpacity: 0, labelScale: 1 };
-    }
     if (activeId) {
       const neighbors = adjacency.current.get(activeId) || new Set();
       const isActive = id === activeId;
@@ -289,7 +272,6 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
   }
 
   function getEdgeOpacity(sourceId, targetId) {
-    if (matchedIds) return 0.05;
     if (activeId) {
       const neighbors = adjacency.current.get(activeId) || new Set();
       if (
@@ -305,34 +287,9 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
 
   return (
     <div>
-      <input
-        type="text"
-        placeholder="search skills..."
-        value={search}
-        onChange={(e) => setSearch(e.target.value)}
-        style={{
-          background: 'transparent',
-          border: '1px solid var(--fg-faint)',
-          borderRadius: 4,
-          color: 'var(--fg)',
-          fontFamily: 'var(--mono)',
-          fontSize: 13,
-          padding: '6px 12px',
-          outline: 'none',
-          marginBottom: '0.75rem',
-          width: '100%',
-          maxWidth: 320,
-          boxSizing: 'border-box',
-        }}
-      />
-      {noResults && (
-        <div style={{ color: 'var(--fg-dim)', fontSize: 13, fontFamily: 'var(--mono)', marginBottom: '0.5rem' }}>
-          {'// not yet'}
-        </div>
-      )}
       <div
         ref={containerRef}
-        style={{ position: 'relative', width: '100%', height: '600px', cursor: 'default' }}
+        style={{ position: 'relative', width: '100%', height: '620px', cursor: 'default' }}
         onMouseEnter={handleMouseEnter}
         onMouseLeave={handleMouseLeave}
       >
@@ -342,6 +299,10 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
           style={{ display: 'block' }}
           onClick={handleSvgClick}
         >
+          {/* Label halo for readability over edges/other labels */}
+          <defs>
+            <style>{`.skill-label { paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; }`}</style>
+          </defs>
           {/* Invisible background to capture clicks */}
           <rect
             width={size.w}
@@ -411,17 +372,24 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
                     fill={fill}
                     style={{ pointerEvents: 'none' }}
                   />
-                  <text
-                    dx={8}
-                    dy={4}
-                    fontSize={12 * labelScale}
-                    fill="white"
-                    fontFamily="var(--mono)"
-                    style={{ pointerEvents: 'none', userSelect: 'none' }}
-                    opacity={labelOpacity}
-                  >
-                    {node.label}
-                  </text>
+                  {(() => {
+                    const leftHalf = pos.x < size.w / 2;
+                    return (
+                      <text
+                        dx={leftHalf ? r + 4 : -(r + 4)}
+                        dy={4}
+                        fontSize={12 * labelScale}
+                        fill="white"
+                        fontFamily="var(--mono)"
+                        textAnchor={leftHalf ? 'start' : 'end'}
+                        className="skill-label"
+                        style={{ pointerEvents: 'none', userSelect: 'none' }}
+                        opacity={labelOpacity}
+                      >
+                        {node.label}
+                      </text>
+                    );
+                  })()}
                 </g>
               );
             })}

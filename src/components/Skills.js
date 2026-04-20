@@ -7,11 +7,17 @@ export default function Skills() {
   const [focusedId, setFocusedId] = useState(null);
 
   return (
-    <div>
+    <div
+      style={{
+        width: 'min(1400px, calc(100vw - 48px))',
+        position: 'relative',
+        left: '50%',
+        transform: 'translateX(-50%)',
+      }}
+    >
       <SectionHeader label="skills">things i use</SectionHeader>
-      <p style={{ color: 'var(--fg-dim)', marginBottom: '1.5rem', maxWidth: 'var(--max-prose)' }}>
-        hover a node to see connections. click to pin, or pick from the list. search for a buzzword —
-        if it&apos;s here you&apos;ll find it, if it&apos;s not you&apos;ll see {'//'} not yet.
+      <p style={{ color: 'var(--fg-dim)', marginBottom: '1rem', maxWidth: 'var(--max-prose)' }}>
+        hover a node to see connections. click to pin, or pick from the list.
       </p>
       <div
         style={{
@@ -32,18 +38,15 @@ export default function Skills() {
           style={{
             width: 260,
             flexShrink: 0,
-            maxHeight: 660,
+            maxHeight: 620,
             overflowY: 'auto',
             scrollbarWidth: 'none',
-            // Stack below graph on narrow viewports via media query workaround:
-            // We use a CSS custom property trick — see the wrapper below.
           }}
           className="skills-list-panel"
         >
           <SkillList onSelect={setFocusedId} focusedId={focusedId} />
         </div>
       </div>
-      {/* Inline responsive style */}
       <style>{`
         @media (max-width: 960px) {
           .skills-list-panel {
