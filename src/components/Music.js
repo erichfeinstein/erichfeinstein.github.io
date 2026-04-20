@@ -7,9 +7,9 @@ export default function Music() {
       <SectionHeader label="now playing">music</SectionHeader>
       <p style={{ fontSize: '1.1rem', lineHeight: 1.7, marginBottom: '1rem' }}>
         Music is the other thing. I play guitar, sing, and lately I've been taking drum lessons.
-        Writing songs and jamming with other people is what connects me to my community — some
-        of the best nights of the last few years have been in rehearsal rooms with people I love.
-        I'm in a few bands, produce stuff on the side, and I've played live around New York City.
+        Writing songs and jamming with other people is what connects me to my community. I'm in
+        a few bands, produce on the side, play live around New York City, spend a lot of time in
+        rehearsal rooms, and catch live shows anywhere from Barclays to dive bars.
       </p>
       <p style={{ color: 'var(--fg-dim)', marginBottom: '2rem' }}>
         What's below is my Samply — where I dump works-in-progress. Some are finished, most aren't.
