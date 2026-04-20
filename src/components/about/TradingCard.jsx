@@ -21,51 +21,6 @@ function useCardTilt() {
   return { ref, onMouseMove, onMouseLeave, ...state };
 }
 
-// Bars overlay the photo top/bottom on hover (no cropping of the photo itself).
-const NAME_BAR_H = 28;
-const STAT_STRIP_H = 44;
-
-const nameBarStyle = {
-  fontFamily: 'var(--mono)',
-  fontSize: '0.78rem',
-  letterSpacing: '0.1em',
-  color: 'var(--fg)',
-  padding: '0 8px',
-  borderBottom: '1px solid var(--fg-faint)',
-  background: 'rgba(5, 5, 7, 0.85)',
-  backdropFilter: 'blur(4px)',
-  lineHeight: 1,
-  display: 'flex',
-  alignItems: 'center',
-  justifyContent: 'space-between',
-  gap: 6,
-  userSelect: 'none',
-  pointerEvents: 'none',
-  height: NAME_BAR_H,
-  boxSizing: 'border-box',
-};
-
-const statStripStyle = {
-  fontFamily: 'var(--mono)',
-  fontSize: '0.7rem',
-  color: 'var(--fg)',
-  padding: '4px 8px',
-  borderTop: '1px solid var(--fg-faint)',
-  background: 'rgba(5, 5, 7, 0.85)',
-  backdropFilter: 'blur(4px)',
-  lineHeight: 1.25,
-  display: 'flex',
-  flexDirection: 'column',
-  alignItems: 'center',
-  justifyContent: 'center',
-  gap: 3,
-  userSelect: 'none',
-  pointerEvents: 'none',
-  whiteSpace: 'nowrap',
-  height: STAT_STRIP_H,
-  boxSizing: 'border-box',
-};
-
 export default function TradingCard({ src, alt }) {
   const reduced = useReducedMotion();
   const [hover, setHover] = useState(false);
@@ -156,7 +111,6 @@ export default function TradingCard({ src, alt }) {
         )}
       </AnimatePresence>
 
-      {/* Photo stays at natural aspect — untouched at rest */}
       <img
         src={src}
         alt={alt}
@@ -179,75 +133,6 @@ export default function TradingCard({ src, alt }) {
           zIndex: 1,
         }}
       />
-
-      {/* Name bar slides down from above on hover; overlays the top of the photo */}
-      <motion.div
-        aria-hidden="true"
-        initial={false}
-        animate={{ y: hover ? 0 : -NAME_BAR_H, opacity: hover ? 1 : 0 }}
-        transition={{ duration: 0.28, ease: 'easeOut' }}
-        style={{
-          ...nameBarStyle,
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          right: 0,
-          zIndex: 2,
-        }}
-      >
-        <span>ERIC FEINSTEIN</span>
-        <span>
-          <span style={{ color: 'var(--fg-dim)' }}>HP:</span> ∞
-        </span>
-      </motion.div>
-
-      {/* Stat strip slides up from below on hover; overlays the bottom of the photo */}
-      <motion.div
-        aria-hidden="true"
-        initial={false}
-        animate={{ y: hover ? 0 : STAT_STRIP_H, opacity: hover ? 1 : 0 }}
-        transition={{ duration: 0.28, ease: 'easeOut', delay: 0.06 }}
-        style={{
-          ...statStripStyle,
-          position: 'absolute',
-          bottom: 0,
-          left: 0,
-          right: 0,
-          zIndex: 2,
-        }}
-      >
-        <span>
-          <span style={{ color: 'var(--fg-dim)' }}>ATK:</span> ships on friday
-        </span>
-        <span>
-          <span style={{ color: 'var(--fg-dim)' }}>DEF:</span> git reset --hard
-        </span>
-      </motion.div>
-
-      {/* Corner rarity mark */}
-      <AnimatePresence>
-        {hover && (
-          <motion.div
-            initial={{ scale: 0 }}
-            animate={{ scale: [0, 1.1, 1] }}
-            exit={{ scale: 0 }}
-            transition={{ duration: 0.25, delay: 0.22, ease: 'easeOut' }}
-            className="rainbow-text"
-            aria-hidden="true"
-            style={{
-              position: 'absolute',
-              bottom: STAT_STRIP_H + 4,
-              right: 6,
-              fontSize: '0.7rem',
-              pointerEvents: 'none',
-              lineHeight: 1,
-              zIndex: 2,
-            }}
-          >
-            ★★★
-          </motion.div>
-        )}
-      </AnimatePresence>
     </div>
   );
 }
