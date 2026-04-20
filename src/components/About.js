@@ -37,7 +37,9 @@ export default function About() {
         </div>
 
         <div style={{ color: 'var(--fg-dim)', fontSize: '0.85rem', marginBottom: '2rem' }}>
-          BA, Computer Science · CWRU&nbsp;'18 &nbsp;·&nbsp; Fullstack Academy&nbsp;'19
+          BA, Computer Science · CWRU&nbsp;'18
+          <br />
+          Fullstack Academy&nbsp;'19
         </div>
 
         <p style={{ fontSize: '1.1rem', lineHeight: 1.7 }}>
