@@ -27,15 +27,19 @@ initialEdges.forEach(({ source, target }) => {
   degreeMap.set(target, (degreeMap.get(target) || 0) + 1);
 });
 
-function nodeRadius(id) {
-  const deg = degreeMap.get(id) || 0;
-  return 5 + Math.min(deg, 7) * 1.2;
+// Uniform size — hubs now read via color brightness instead.
+function nodeRadius() {
+  return 7;
 }
 
-function nodeColor(cat) {
+function nodeColor(id, cat) {
   const { hue } = CATEGORIES[cat] || { hue: 0 };
-  if (hue === 0) return 'hsl(0, 0%, 90%)';
-  return `hsl(${hue}, 35%, 90%)`;
+  const deg = degreeMap.get(id) || 0;
+  // Lightness scales with degree: leaves sit around 45%, hubs nudge toward 95%.
+  const t = Math.min(deg, 8) / 8; // 0..1
+  const lightness = 45 + t * 50; // 45..95
+  const saturation = hue === 0 ? 0 : 30 - t * 15; // hubs desaturate toward white
+  return `hsl(${hue}, ${saturation}%, ${lightness}%)`;
 }
 
 // Category grid anchors — 5 cols × 4 rows
@@ -293,41 +297,51 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
     sim.alpha(0.1).restart();
   }, [onUnfocus]);
 
-  // Active highlight id: focusedId takes priority over hover for highlight
-  const activeId = hoveredId || focusedId || null;
+  // "Active" set: union of hovered id, focused id, and every pinned id.
+  // Each of these keeps itself + its direct neighbors lit; everything else dims.
+  const activeSet = new Set();
+  if (hoveredId) activeSet.add(hoveredId);
+  if (focusedId) activeSet.add(focusedId);
+  pinnedIds.forEach((id) => activeSet.add(id));
 
-  // Derive per-node visual properties
+  const litSet = new Set();
+  if (activeSet.size > 0) {
+    activeSet.forEach((id) => {
+      litSet.add(id);
+      (adjacency.current.get(id) || new Set()).forEach((n) => litSet.add(n));
+    });
+  }
+
   function getNodeProps(id) {
-    const baseR = nodeRadius(id);
+    const baseR = nodeRadius();
     const cat = initialNodes.find((n) => n.id === id)?.cat;
-    const color = nodeColor(cat);
+    const color = nodeColor(id, cat);
     const isPinned = pinnedIds.has(id);
-    const labelScale = isPinned ? 1.05 : 1;
+    const isActive = activeSet.has(id);
+    const labelScale = isPinned ? 1.1 : 1;
 
-    if (activeId) {
-      const neighbors = adjacency.current.get(activeId) || new Set();
-      const isActive = id === activeId;
-      const isNeighbor = neighbors.has(id);
-      if (isActive || isNeighbor) {
-        return { r: baseR, fill: '#ffffff', opacity: 1, labelOpacity: 1, labelScale };
+    if (activeSet.size > 0) {
+      if (litSet.has(id)) {
+        return {
+          r: baseR,
+          fill: isActive ? '#ffffff' : color,
+          opacity: 1,
+          labelOpacity: 1,
+          labelScale,
+          isPinned,
+        };
       }
-      return { r: baseR, fill: color, opacity: 0.25, labelOpacity: 0.15, labelScale: 1 };
+      return { r: baseR, fill: color, opacity: 0.2, labelOpacity: 0.1, labelScale: 1, isPinned: false };
     }
-    return { r: baseR, fill: color, opacity: 1, labelOpacity: 1, labelScale };
+    return { r: baseR, fill: color, opacity: 1, labelOpacity: 1, labelScale, isPinned };
   }
 
   function getEdgeOpacity(sourceId, targetId) {
-    if (activeId) {
-      const neighbors = adjacency.current.get(activeId) || new Set();
-      if (
-        (sourceId === activeId && neighbors.has(targetId)) ||
-        (targetId === activeId && neighbors.has(sourceId))
-      ) {
-        return 0.6;
-      }
-      return 0.03;
-    }
-    return 1;
+    if (activeSet.size === 0) return 1;
+    const sourceActive = activeSet.has(sourceId);
+    const targetActive = activeSet.has(targetId);
+    if (sourceActive || targetActive) return 0.7;
+    return 0.04;
   }
 
   return (
@@ -345,13 +359,25 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
           style={{ display: 'block' }}
           onClick={handleSvgClick}
         >
-          {/* Label halo + hover-smoothing transitions */}
+          {/* Label halo + hover-smoothing transitions + pinned pulse */}
           <defs>
+            <radialGradient id="pin-glow">
+              <stop offset="0%" stopColor="#ff2bd6" stopOpacity="0" />
+              <stop offset="55%" stopColor="#ff2bd6" stopOpacity="0.25" />
+              <stop offset="75%" stopColor="#00e5ff" stopOpacity="0.35" />
+              <stop offset="100%" stopColor="#00e5ff" stopOpacity="0" />
+            </radialGradient>
             <style>{`
               .skill-label { paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; transition: opacity 180ms ease-out; }
               .skill-node-group { transition: opacity 180ms ease-out; }
               .skill-node-dot { transition: fill 180ms ease-out; }
               .skill-edge { transition: opacity 180ms ease-out; }
+              @keyframes skill-pin-pulse {
+                0%   { r: 12; opacity: 0.9; }
+                50%  { r: 22; opacity: 0.35; }
+                100% { r: 12; opacity: 0.9; }
+              }
+              .skill-pin-ring { animation: skill-pin-pulse 1.6s ease-in-out infinite; transform-box: fill-box; transform-origin: center; }
             `}</style>
           </defs>
           {/* Invisible background to capture clicks */}
@@ -408,16 +434,22 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
                     fill="transparent"
                     style={{ pointerEvents: 'all' }}
                   />
-                  {/* Pin ring (behind the dot) */}
+                  {/* Pinned: rainbow glow halo + pulsing ring */}
                   {isPinned && (
-                    <circle
-                      r={r + 3}
-                      fill="none"
-                      stroke="var(--fg)"
-                      strokeWidth="1"
-                      opacity="0.8"
-                      style={{ pointerEvents: 'none' }}
-                    />
+                    <>
+                      <circle
+                        r={22}
+                        fill="url(#pin-glow)"
+                        style={{ pointerEvents: 'none' }}
+                      />
+                      <circle
+                        className="skill-pin-ring"
+                        fill="none"
+                        stroke="#ff2bd6"
+                        strokeWidth="1.2"
+                        style={{ pointerEvents: 'none' }}
+                      />
+                    </>
                   )}
                   {/* Visible dot */}
                   <circle
@@ -433,11 +465,11 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
                         dx={leftHalf ? r + 4 : -(r + 4)}
                         dy={4}
                         fontSize={12 * labelScale}
-                        fill="white"
                         fontFamily="var(--mono)"
                         textAnchor={leftHalf ? 'start' : 'end'}
-                        className="skill-label"
-                        style={{ pointerEvents: 'none', userSelect: 'none' }}
+                        className={`skill-label${isPinned ? ' rainbow-text' : ''}`}
+                        fill={isPinned ? undefined : 'white'}
+                        style={{ pointerEvents: 'none', userSelect: 'none', fontWeight: isPinned ? 700 : 400 }}
                         opacity={labelOpacity}
                       >
                         {node.label}
