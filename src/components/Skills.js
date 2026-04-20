@@ -20,11 +20,11 @@ export default function Skills() {
   return (
     <div style={containerStyle}>
       <SectionHeader label="skills">things i use</SectionHeader>
-      <p style={{ color: 'var(--fg-dim)', marginBottom: '1rem', maxWidth: 'var(--max-prose)' }}>
-        {isMobile
-          ? 'tap a category below.'
-          : 'hover a node to see connections. click to pin, or pick from the list.'}
-      </p>
+      {!isMobile && (
+        <p style={{ color: 'var(--fg-dim)', marginBottom: '1rem', maxWidth: 'var(--max-prose)' }}>
+          hover a node to see connections. click to pin, or pick from the list.
+        </p>
+      )}
       <div className="skills-layout">
         {!isMobile && (
           <div className="skills-graph-col">
