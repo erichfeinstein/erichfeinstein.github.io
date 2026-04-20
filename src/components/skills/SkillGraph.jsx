@@ -127,10 +127,10 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
       .force('charge', forceManyBody().strength(-140))
       .force('link', forceLink(edges).id((d) => d.id).distance(70).strength(0.5))
       .force('center', forceCenter(w / 2, h / 2))
-      .force('collide', forceCollide(32))
+      .force('collide', forceCollide((d) => Math.max(30, d.label.length * 3.2)))
       .force('clusterX', forceX((d) => anchors[d.cat]?.x ?? w / 2).strength(0.18))
       .force('clusterY', forceY((d) => anchors[d.cat]?.y ?? h / 2).strength(0.18))
-      .force('cursor', makeCursorForce(() => mousePosRef.current))
+      .force('cursor', makeCursorForce(() => mousePosRef.current, { radius: 180, strength: 0.05 }))
       .alphaDecay(0.05)
       .alphaTarget(0);
 
@@ -391,7 +391,7 @@ export default function SkillGraph({ focusedId, onUnfocus }) {
               <stop offset="1" stopColor="#ff2bd6" />
             </linearGradient>
             <style>{`
-              .skill-label { paint-order: stroke; stroke: var(--bg); stroke-width: 3px; stroke-linejoin: round; transition: opacity 180ms ease-out; }
+              .skill-label { paint-order: stroke; stroke: var(--bg); stroke-width: 4px; stroke-linejoin: round; transition: opacity 180ms ease-out; }
               .skill-node-group { transition: opacity 180ms ease-out; }
               .skill-node-dot { transition: fill 180ms ease-out; }
               .skill-edge { transition: opacity 180ms ease-out; }
