@@ -21,6 +21,15 @@ function useCardTilt() {
   return { ref, onMouseMove, onMouseLeave, ...state };
 }
 
+// Name bar: ~28px total (5+4px padding + 1px border + ~12px text line)
+const NAME_BAR_H = 28;
+// Stat strip: ~25px total (4+5px padding + 1px border + ~11px text line)
+const STAT_STRIP_H = 25;
+// Photo frame: fixed height so object-fit: cover can fill it
+const PHOTO_H = 220;
+// Total fixed container height — never changes between rest and hover
+const CARD_H = NAME_BAR_H + PHOTO_H + STAT_STRIP_H;
+
 const nameBarStyle = {
   fontFamily: 'var(--mono)',
   fontSize: '0.8rem',
@@ -33,6 +42,7 @@ const nameBarStyle = {
   textAlign: 'center',
   userSelect: 'none',
   pointerEvents: 'none',
+  overflow: 'hidden',
 };
 
 const statStripStyle = {
@@ -86,8 +96,9 @@ export default function TradingCard({ src, alt }) {
     ? `perspective(1000px) rotateX(${-ny * 8}deg) rotateY(${nx * 8}deg) rotate(-1.5deg)`
     : 'rotate(-1.5deg)';
 
+  // Edge glow halved in strength compared to original
   const boxShadow = hover && active
-    ? `0 0 0 1px rgba(255,43,214,${proximity * 0.3}), 0 0 24px rgba(255,43,214,${proximity * 0.5}), 0 0 40px rgba(0,229,255,${proximity * 0.4})`
+    ? `0 0 0 1px rgba(255,43,214,${proximity * 0.15}), 0 0 12px rgba(255,43,214,${proximity * 0.25}), 0 0 20px rgba(0,229,255,${proximity * 0.2})`
     : 'none';
 
   const sheenBgPos = `${(nx + 0.5) * 100}% ${(ny + 0.5) * 100}%`;
@@ -101,14 +112,16 @@ export default function TradingCard({ src, alt }) {
       style={{
         position: 'relative',
         width: 220,
-        display: 'inline-block',
-        lineHeight: 0,
+        height: CARD_H,
+        display: 'inline-flex',
+        flexDirection: 'column',
         transformStyle: 'preserve-3d',
         willChange: 'transform',
         transform: cardTransform,
         transition: 'transform 150ms ease-out, box-shadow 150ms',
         boxShadow,
         cursor: 'default',
+        overflow: 'hidden',
       }}
     >
       {/* Outer double-border ring: fades in on hover */}
@@ -133,33 +146,35 @@ export default function TradingCard({ src, alt }) {
         )}
       </AnimatePresence>
 
-      {/* Name bar — slides down from above */}
-      <AnimatePresence>
-        {hover && (
-          <motion.div
-            initial={{ y: -8, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: -8, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeOut' }}
-            style={nameBarStyle}
-          >
-            ERIC FEINSTEIN
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Name bar — animates from height 0 to NAME_BAR_H; photo crops from top */}
+      <motion.div
+        aria-hidden="true"
+        animate={{ height: hover ? NAME_BAR_H : 0, opacity: hover ? 1 : 0 }}
+        initial={{ height: 0, opacity: 0 }}
+        transition={{ duration: 0.25, ease: 'easeOut' }}
+        style={{ ...nameBarStyle, flexShrink: 0 }}
+      >
+        ERIC FEINSTEIN
+      </motion.div>
 
-      {/* Photo with inset frame */}
+      {/* Photo frame — flex: 1 so it fills whatever space remains; image uses object-fit: cover */}
       <div
         style={{
+          flex: 1,
           border: '1px solid var(--fg-faint)',
           overflow: 'hidden',
           lineHeight: 0,
           position: 'relative',
+          minHeight: 0,
         }}
       >
-        <img src={src} alt={alt} style={{ width: '100%', height: 'auto', display: 'block' }} />
+        <img
+          src={src}
+          alt={alt}
+          style={{ width: '100%', height: '100%', display: 'block', objectFit: 'cover', objectPosition: 'center top' }}
+        />
 
-        {/* Holographic sheen overlay — sits inside photo area */}
+        {/* Holographic sheen overlay — subtler: overlay blend + lower opacity */}
         <div
           aria-hidden="true"
           style={{
@@ -168,8 +183,8 @@ export default function TradingCard({ src, alt }) {
             background: 'linear-gradient(270deg, #ff2bd6, #00e5ff, #00ff88, #ff2bd6)',
             backgroundSize: '300% 300%',
             backgroundPosition: sheenBgPos,
-            mixBlendMode: 'color-dodge',
-            opacity: hover && active ? 0.35 : 0,
+            mixBlendMode: 'overlay',
+            opacity: hover && active ? 0.18 : 0,
             transition: 'opacity 150ms, background-position 80ms',
             pointerEvents: 'none',
           }}
@@ -200,27 +215,22 @@ export default function TradingCard({ src, alt }) {
         </AnimatePresence>
       </div>
 
-      {/* Stat strip — slides up from below */}
-      <AnimatePresence>
-        {hover && (
-          <motion.div
-            initial={{ y: 8, opacity: 0 }}
-            animate={{ y: 0, opacity: 1 }}
-            exit={{ y: 8, opacity: 0 }}
-            transition={{ duration: 0.3, ease: 'easeOut', delay: 0.06 }}
-            style={statStripStyle}
-          >
-            <span style={{ color: 'var(--fg-dim)' }}>HP:</span>{' '}
-            <span>∞</span>
-            {' · '}
-            <span style={{ color: 'var(--fg-dim)' }}>ATK:</span>{' '}
-            <span>ships on friday</span>
-            {' · '}
-            <span style={{ color: 'var(--fg-dim)' }}>DEF:</span>{' '}
-            <span>git reset --hard</span>
-          </motion.div>
-        )}
-      </AnimatePresence>
+      {/* Stat strip — animates from height 0 to STAT_STRIP_H; photo crops from bottom */}
+      <motion.div
+        animate={{ height: hover ? STAT_STRIP_H : 0, opacity: hover ? 1 : 0 }}
+        initial={{ height: 0, opacity: 0 }}
+        transition={{ duration: 0.25, ease: 'easeOut', delay: 0.06 }}
+        style={{ ...statStripStyle, flexShrink: 0 }}
+      >
+        <span style={{ color: 'var(--fg-dim)' }}>HP:</span>{' '}
+        <span>∞</span>
+        {' · '}
+        <span style={{ color: 'var(--fg-dim)' }}>ATK:</span>{' '}
+        <span>ships on friday</span>
+        {' · '}
+        <span style={{ color: 'var(--fg-dim)' }}>DEF:</span>{' '}
+        <span>git reset --hard</span>
+      </motion.div>
     </div>
   );
 }
