@@ -22,9 +22,9 @@ const initialEdges = EDGES
 // Degree map: count edges per node
 const degreeMap = new Map();
 initialNodes.forEach((n) => degreeMap.set(n.id, 0));
-initialEdges.forEach(([s, t]) => {
-  degreeMap.set(s, (degreeMap.get(s) || 0) + 1);
-  degreeMap.set(t, (degreeMap.get(t) || 0) + 1);
+initialEdges.forEach(({ source, target }) => {
+  degreeMap.set(source, (degreeMap.get(source) || 0) + 1);
+  degreeMap.set(target, (degreeMap.get(target) || 0) + 1);
 });
 
 function nodeRadius(id) {
