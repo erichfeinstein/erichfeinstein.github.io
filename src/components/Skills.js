@@ -19,38 +19,42 @@ export default function Skills() {
       <p style={{ color: 'var(--fg-dim)', marginBottom: '1rem', maxWidth: 'var(--max-prose)' }}>
         hover a node to see connections. click to pin, or pick from the list.
       </p>
-      <div
-        style={{
-          display: 'flex',
-          gap: '1.5rem',
-          alignItems: 'flex-start',
-        }}
-      >
-        {/* Graph — takes remaining space */}
-        <div style={{ flex: 1, minWidth: 0 }}>
+      <div className="skills-layout">
+        <div className="skills-graph-col">
           <SkillGraph
             focusedId={focusedId}
             onUnfocus={() => setFocusedId(null)}
           />
         </div>
-        {/* Category list — fixed width, scrollable */}
-        <div
-          style={{
-            width: 260,
-            flexShrink: 0,
-            maxHeight: 620,
-            overflowY: 'auto',
-            scrollbarWidth: 'none',
-          }}
-          className="skills-list-panel"
-        >
+        <div className="skills-list-panel">
           <SkillList onSelect={setFocusedId} focusedId={focusedId} />
         </div>
       </div>
       <style>{`
+        .skills-layout {
+          display: flex;
+          gap: 1.5rem;
+          align-items: flex-start;
+        }
+        .skills-graph-col { flex: 1; min-width: 0; }
+        .skills-list-panel {
+          width: 260px;
+          flex-shrink: 0;
+          max-height: 620px;
+          overflow-y: auto;
+          scrollbar-width: none;
+        }
+        .skills-list-panel::-webkit-scrollbar { display: none; }
+
         @media (max-width: 960px) {
+          .skills-layout { flex-direction: column; }
           .skills-list-panel {
-            display: none !important;
+            width: 100%;
+            max-height: none;
+            overflow-y: visible;
+            margin-top: 1.5rem;
+            border-top: 1px solid var(--fg-faint);
+            padding-top: 1rem;
           }
         }
       `}</style>
