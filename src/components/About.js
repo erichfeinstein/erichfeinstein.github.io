@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import GlitchText from './shell/GlitchText';
 import SectionHeader from './shell/SectionHeader';
+import TradingCard from './about/TradingCard';
 
 const ROLES = ['front-end engineer', 'guitarist', 'vibe-coder'];
 
@@ -39,18 +40,7 @@ export default function About() {
           I thrive on collaborating with designers, product owners, and fellow engineers to
           create outstanding user experiences.
         </p>
-        <img
-          src="/me.jpg"
-          alt="eric feinstein"
-          style={{
-            width: 220, height: 'auto',
-            border: '1px solid var(--fg-faint)',
-            transform: 'rotate(-1.5deg)',
-            transition: 'filter 200ms',
-          }}
-          onMouseEnter={(e) => { e.currentTarget.style.filter = 'drop-shadow(2px 0 0 #ff2bd6) drop-shadow(-2px 0 0 #00e5ff)'; }}
-          onMouseLeave={(e) => { e.currentTarget.style.filter = 'none'; }}
-        />
+        <TradingCard src="/me.jpg" alt="eric feinstein" />
       </div>
     </div>
   );
