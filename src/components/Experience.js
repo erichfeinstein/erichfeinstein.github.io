@@ -4,7 +4,6 @@ import SectionHeader from './shell/SectionHeader';
 const experiences = [
   {
     company: 'Grubhub',
-    logo: require('../assets/photos/grubhub.png'),
     title: 'Senior Software Engineer',
     period: 'Dec 2021 - Present',
     details: [
@@ -15,7 +14,6 @@ const experiences = [
   },
   {
     company: 'Branding Brand',
-    logo: require('../assets/photos/bb.png'),
     title: 'Development Manager',
     period: 'June 2020 - Dec 2021',
     details: [
@@ -25,7 +23,6 @@ const experiences = [
   },
   {
     company: 'Cedrus Digital',
-    logo: require('../assets/photos/cedrus.png'),
     title: 'Software Engineer',
     period: 'April 2019 - May 2020',
     details: [
@@ -47,22 +44,10 @@ export default function Experience() {
               position: 'absolute', left: -21, top: 10, width: 9, height: 9, borderRadius: '50%',
               background: 'var(--bg)', border: '1px solid var(--fg)',
             }} />
-            <header style={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-start', gap: '1rem' }}>
-              <div>
-                <h2 style={{ fontSize: '1.6rem' }}>{exp.company}</h2>
-                <div style={{ color: 'var(--fg-dim)' }}>{exp.title}</div>
-                <div style={{ color: 'var(--fg-dim)', fontSize: '0.85rem' }}>{exp.period}</div>
-              </div>
-              <img
-                src={exp.logo}
-                alt={`${exp.company} logo`}
-                style={{
-                  width: 72, height: 72, objectFit: 'contain',
-                  filter: 'grayscale(1) opacity(0.6)', transition: 'filter 200ms',
-                }}
-                onMouseEnter={(e) => { e.currentTarget.style.filter = 'none'; }}
-                onMouseLeave={(e) => { e.currentTarget.style.filter = 'grayscale(1) opacity(0.6)'; }}
-              />
+            <header>
+              <h2 style={{ fontSize: '1.6rem' }}>{exp.company}</h2>
+              <div style={{ color: 'var(--fg-dim)' }}>{exp.title}</div>
+              <div style={{ color: 'var(--fg-dim)', fontSize: '0.85rem' }}>{exp.period}</div>
             </header>
             <ul style={{ listStyle: 'none', marginTop: '0.75rem', display: 'flex', flexDirection: 'column', gap: '0.5rem' }}>
               {exp.details.map((d, j) => (
