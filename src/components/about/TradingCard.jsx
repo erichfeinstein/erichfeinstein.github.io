@@ -23,7 +23,7 @@ function useCardTilt() {
 
 // Bars overlay the photo top/bottom on hover (no cropping of the photo itself).
 const NAME_BAR_H = 28;
-const STAT_STRIP_H = 25;
+const STAT_STRIP_H = 44;
 
 const nameBarStyle = {
   fontFamily: 'var(--mono)',
@@ -49,15 +49,16 @@ const statStripStyle = {
   fontFamily: 'var(--mono)',
   fontSize: '0.7rem',
   color: 'var(--fg)',
-  padding: '0 8px',
+  padding: '4px 8px',
   borderTop: '1px solid var(--fg-faint)',
   background: 'rgba(5, 5, 7, 0.85)',
   backdropFilter: 'blur(4px)',
-  lineHeight: 1,
+  lineHeight: 1.25,
   display: 'flex',
+  flexDirection: 'column',
   alignItems: 'center',
   justifyContent: 'center',
-  gap: 8,
+  gap: 3,
   userSelect: 'none',
   pointerEvents: 'none',
   whiteSpace: 'nowrap',
@@ -214,7 +215,6 @@ export default function TradingCard({ src, alt }) {
         <span>
           <span style={{ color: 'var(--fg-dim)' }}>ATK:</span> ships on friday
         </span>
-        <span style={{ color: 'var(--fg-faint)' }}>·</span>
         <span>
           <span style={{ color: 'var(--fg-dim)' }}>DEF:</span> git reset --hard
         </span>
