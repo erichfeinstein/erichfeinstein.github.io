@@ -8,6 +8,8 @@ import { getPostBySlug, getReadingTimeMinutes } from '../../lib/posts';
 import SectionHeader from '../shell/SectionHeader';
 
 const mdComponents = {
+  p: ({ children }) => <p>{children}</p>,
+  hr: () => <div style={{ height: '2rem' }} />,
   h1: ({ children }) => <h2 style={{ marginTop: '2rem' }}>{'// '}{children}</h2>,
   h2: ({ children }) => <h2 style={{ marginTop: '2rem' }}>{'// '}{children}</h2>,
   h3: ({ children }) => <h3 style={{ marginTop: '1.5rem', color: 'var(--fg-dim)' }}>{'// '}{children}</h3>,
